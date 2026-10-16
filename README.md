@@ -1,1 +1,1 @@
-# mrkenzz.web.id
+# ntslregg-arch.github.io
