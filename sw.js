@@ -1,4 +1,4 @@
-const CACHE_NAME = 'topupzone-v1';
+const CACHE_NAME = 'topupzone-v3';
 const urlsToCache = [
   './',
   './index.html',
