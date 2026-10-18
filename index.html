@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#2563eb">
+<title>TopUpKu - Top Up Game Instan</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+  .btn-press:active { transform: scale(0.97); }
+  .hide { display: none !important; }
+  #qrisCanvas { max-width: 100%; height: auto !important; }
+</style>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-900">
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-10 bg-white shadow-sm">
+  <div class="px-4 py-3 flex items-center gap-3">
+    <button id="btnBack" class="hide w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center btn-press">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="flex-1"><h1 id="pageTitle" class="font-bold text-lg select-none">Memuat...</h1></div>
+    <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center">
+      <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+    </div>
+  </div>
+</header>
+
+<main class="pb-24">
+  <!-- STEP 1: Pilih Game -->
+  <section id="step1" class="hide p-4">
+    <h2 class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wide">Pilih Game</h2>
+    <input id="searchGame" type="search" placeholder="Cari game..." class="w-full mb-4 px-4 py-3 rounded-xl bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+    <div id="gameList" class="grid grid-cols-2 gap-3"></div>
+  </section>
+
+  <!-- STEP 2: Pilih Nominal + User ID -->
+  <section id="step2" class="hide p-4">
+    <div id="gameHeader" class="bg-white rounded-2xl p-4 mb-4 flex items-center gap-3 shadow-sm"></div>
+    <label class="block text-sm font-semibold text-gray-700 mb-2">User ID / Server ID</label>
+    <input id="inputUserId" type="text" placeholder="Contoh: 12345678 (1234)" class="w-full mb-4 px-4 py-3 rounded-xl bg-white border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+    <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Nominal</label>
+    <div id="productList" class="grid grid-cols-2 gap-3"></div>
+  </section>
+
+  <!-- STEP 3: Metode Pembayaran -->
+  <section id="step3" class="hide p-4">
+    <div class="bg-white rounded-2xl p-4 mb-4 shadow-sm">
+      <h3 class="font-semibold mb-3">Ringkasan Pesanan</h3>
+      <div id="summary" class="space-y-2 text-sm"></div>
+    </div>
+    <h3 class="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wide">Metode Pembayaran</h3>
+    <div class="space-y-2">
+      <button data-method="qris" class="pay-method w-full bg-white rounded-xl p-4 flex items-center gap-3 shadow-sm btn-press border-2 border-transparent">
+        <div class="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-2xl">📱</div>
+        <div class="flex-1 text-left">
+          <div class="font-semibold">QRIS</div>
+          <div class="text-xs text-gray-500">Scan dengan e-wallet / m-banking</div>
+        </div>
+        <div class="w-5 h-5 rounded-full border-2 border-gray-300 radio-indicator"></div>
+      </button>
+      <button data-method="dana" class="pay-method w-full bg-white rounded-xl p-4 flex items-center gap-3 shadow-sm btn-press border-2 border-transparent">
+        <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center text-2xl">💙</div>
+        <div class="flex-1 text-left">
+          <div class="font-semibold">DANA</div>
+          <div class="text-xs text-gray-500">Transfer ke nomor DANA</div>
+        </div>
+        <div class="w-5 h-5 rounded-full border-2 border-gray-300 radio-indicator"></div>
+      </button>
+    </div>
+    <button id="btnLanjut" class="mt-6 w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg btn-press disabled:opacity-40" disabled>
+      Lanjut ke Pembayaran
+    </button>
+  </section>
+
+  <!-- STEP 4: Pembayaran -->
+  <section id="step4" class="hide p-4"><div id="paymentBox"></div></section>
+
+  <!-- STEP 5: Status -->
+  <section id="step5" class="hide p-4">
+    <div class="bg-white rounded-2xl p-6 text-center shadow-sm">
+      <div id="statusIcon" class="text-6xl mb-4">⏳</div>
+      <h2 id="statusTitle" class="text-xl font-bold mb-2">Menunggu Pembayaran</h2>
+      <p id="statusDesc" class="text-sm text-gray-500 mb-4">Pembayaran Anda sedang diverifikasi</p>
+      <div id="orderDetail" class="text-left bg-gray-50 rounded-xl p-3 text-xs space-y-1 mb-4"></div>
+      <button onclick="location.reload()" class="w-full bg-gray-100 py-3 rounded-xl font-semibold btn-press">Kembali ke Beranda</button>
+    </div>
+  </section>
+
+  <!-- ======= ADMIN LOGIN (hidden) ======= -->
+  <section id="adminLogin" class="hide p-4">
+    <div class="bg-white rounded-2xl p-6 shadow-sm max-w-sm mx-auto mt-8">
+      <h2 class="text-lg font-bold mb-1">🔒 Admin Panel</h2>
+      <p class="text-xs text-gray-500 mb-4">Login untuk mengelola pesanan & website</p>
+      <form id="adminForm" class="space-y-3">
+        <input type="email" id="adminEmail" required placeholder="Email admin" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <input type="password" id="adminPass" required placeholder="Password" class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl btn-press">Masuk</button>
+        <p id="adminErr" class="text-xs text-red-500 text-center"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ======= ADMIN PANEL (hidden) ======= -->
+  <section id="adminPanel" class="hide p-4">
+    <div class="flex justify-between items-center mb-3">
+      <div class="flex gap-2">
+        <button class="admin-tab bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold btn-press" data-tab="orders">Pesanan</button>
+        <button class="admin-tab bg-white text-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold btn-press" data-tab="settings">Setelan Web</button>
+        <button class="admin-tab bg-white text-gray-600 px-3 py-1.5 rounded-lg text-xs font-semibold btn-press" data-tab="games">Produk</button>
+      </div>
+      <button id="adminLogout" class="text-xs font-semibold text-red-500 btn-press">Logout</button>
+    </div>
+
+    <!-- TAB PESANAN -->
+    <div id="adminTabOrders">
+      <div class="flex gap-2 mb-4 overflow-x-auto pb-1">
+        <button class="admin-filter bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap btn-press" data-filter="pending">Pending</button>
+        <button class="admin-filter bg-white text-gray-600 px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap btn-press" data-filter="success">Sukses</button>
+        <button class="admin-filter bg-white text-gray-600 px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap btn-press" data-filter="failed">Gagal</button>
+        <button class="admin-filter bg-white text-gray-600 px-4 py-2 rounded-lg text-xs font-semibold whitespace-nowrap btn-press" data-filter="all">Semua</button>
+      </div>
+      <div id="adminOrders"></div>
+    </div>
+
+    <!-- TAB SETELAN WEB -->
+    <div id="adminTabSettings" class="hide bg-white rounded-xl p-4 shadow-sm">
+      <h3 class="font-bold mb-4 text-sm">Pengaturan Website</h3>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">Nama Website</label>
+          <input type="text" id="setSiteName" class="w-full px-3 py-2 border rounded-lg text-sm">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">String QRIS Statis (Tempel kode QRIS Anda)</label>
+          <textarea id="setQris" rows="4" class="w-full px-3 py-2 border rounded-lg text-sm font-mono break-all"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">Nomor DANA</label>
+          <input type="text" id="setDanaNum" class="w-full px-3 py-2 border rounded-lg text-sm">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 mb-1">Nama Pemilik DANA</label>
+          <input type="text" id="setDanaName" class="w-full px-3 py-2 border rounded-lg text-sm">
+        </div>
+        <button id="btnSaveSettings" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl btn-press mt-2">Simpan Setelan</button>
+      </div>
+    </div>
+
+    <!-- TAB PRODUK -->
+    <div id="adminTabGames" class="hide bg-white rounded-xl p-4 shadow-sm">
+      <h3 class="font-bold mb-2 text-sm">Daftar Game & Produk (Format JSON)</h3>
+      <p class="text-xs text-gray-500 mb-3">Hati-hati saat mengedit. Pastikan format kurung kurawal dan koma benar.</p>
+      <textarea id="gamesJsonInput" rows="15" class="w-full px-3 py-2 border rounded-lg text-xs font-mono whitespace-pre"></textarea>
+      <button id="btnSaveGames" class="w-full bg-green-600 text-white font-bold py-3 rounded-xl btn-press mt-3">Simpan Daftar Produk</button>
+    </div>
+  </section>
+</main>
+
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-5 py-3 rounded-full text-sm shadow-lg opacity-0 pointer-events-none transition-opacity z-50 whitespace-nowrap"></div>
+
+<script type="module">
+// ==========================================================
+// KONFIGURASI FIREBASE
+// ==========================================================
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyABlF_oyHt29093_8NTZMB-4cDlg0nDAfY",
+  authDomain: "topupgame-33724.firebaseapp.com",
+  databaseURL: "https://topupgame-33724-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "topupgame-33724",
+  storageBucket: "topupgame-33724.firebasestorage.app",
+  messagingSenderId: "874109801767",
+  appId: "1:874109801767:web:f73cde6493367bc9910502"
+};
+
+// ==========================================================
+// DATA DEFAULT (SUDAH DIISI QRIS MRKENZZ)
+// ==========================================================
+let appSettings = {
+  siteName: "MRKENZZ TopUp",
+  staticQris: "00020101021126610014COM.GO-JEK.WWW01189360091433335786021033357860210333860203357860303UMI51440014ID.CO.QRIS.WWW0215ID10264734827050303UMI5204541153033605802ID5919MRKENZZ, Digital & Kreatif6013JAKARTA BARAT610510534062070703A0163041D8E",
+  danaNumber: "081234567890", // Ganti nomor DANA Anda di sini atau lewat Panel Admin
+  danaName: "MRKENZZ"
+};
+
+let appGames = [
+  { id:'mlbb', name:'Mobile Legends', publisher:'Moonton', icon:'⚔️', color:'from-blue-500 to-indigo-600', products:[
+    {id:'mlbb-86',  name:'86 Diamonds',  price:22000},
+    {id:'mlbb-172', name:'172 Diamonds', price:43000},
+    {id:'mlbb-257', name:'257 Diamonds', price:64000},
+  ]},
+  { id:'ff', name:'Free Fire', publisher:'Garena', icon:'🔥', color:'from-orange-500 to-red-600', products:[
+    {id:'ff-70',  name:'70 Diamonds',  price:10000},
+    {id:'ff-140', name:'140 Diamonds', price:20000},
+    {id:'ff-355', name:'355 Diamonds', price:50000},
+  ]},
+  { id:'pubg', name:'PUBG Mobile', publisher:'Tencent', icon:'🎯', color:'from-yellow-500 to-orange-600', products:[
+    {id:'pubg-60',  name:'60 UC',  price:15000},
+    {id:'pubg-325', name:'325 UC', price:75000},
+  ]},
+];
+
+const state = { step:1, game:null, product:null, userId:'', method:null, orderId:null, amount:0 };
+let db = null, unsubOrder = null, fbReady = false;
+
+// ===== FIREBASE INIT =====
+const FB_APP_URL  = 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+const FB_DB_URL   = 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+const FB_AUTH_URL = 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+(async () => {
+  try {
+    const { initializeApp } = await import(FB_APP_URL);
+    const { getFirestore }  = await import(FB_DB_URL);
+    db = getFirestore(initializeApp(FIREBASE_CONFIG));
+    fbReady = true;
+    await loadSettings();
+  } catch (e) { console.error('Firebase init error:', e); }
+})();
+
+// ===== LOAD SETTINGS DARI FIREBASE =====
+async function loadSettings() {
+  try {
+    const { doc, getDoc } = await import(FB_DB_URL);
+    
+    // Cek apakah admin sudah pernah menyimpan setelan di database
+    const docSnap = await getDoc(doc(db, 'settings', 'config'));
+    if (docSnap.exists()) {
+      appSettings = { ...appSettings, ...docSnap.data() }; // Timpa default dengan yang ada di DB
+    }
+    
+    const gamesSnap = await getDoc(doc(db, 'settings', 'games'));
+    if (gamesSnap.exists() && gamesSnap.data().list) {
+      appGames = gamesSnap.data().list;
+    }
+  } catch (e) { console.log("Gagal load settings, pakai default", e); }
+  
+  $('#pageTitle').textContent = appSettings.siteName;
+  document.title = appSettings.siteName + ' - Top Up Game';
+  renderGames();
+  goToStep(1);
+}
+
+// ===== HELPERS =====
+const $ = s => document.querySelector(s);
+const rupiah = n => 'Rp ' + n.toLocaleString('id-ID');
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.style.opacity = '1';
+  clearTimeout(t._t); t._t = setTimeout(() => t.style.opacity = '0', 2000);
+}
+
+// ===== QRIS DINAMIS =====
+function crc16(str) {
+  let crc = 0xFFFF;
+  for (let i = 0; i < str.length; i++) {
+    crc ^= str.charCodeAt(i) << 8;
+    for (let j = 0; j < 8; j++) crc = (crc & 0x8000) ? ((crc<<1)^0x1021)&0xFFFF : (crc<<1)&0xFFFF;
+  }
+  return crc.toString(16).toUpperCase().padStart(4,'0');
+}
+function parseTLV(str) {
+  const out=[]; let i=0;
+  while (i < str.length) {
+    const tag = str.substring(i,i+2);
+    const len = parseInt(str.substring(i+2,i+4),10);
+    if (isNaN(len)) break;
+    out.push({ tag, val: str.substring(i+4, i+4+len) });
+    i += 4 + len;
+  }
+  return out;
+}
+function buildDynamicQris(staticQris, amount) {
+  let base = staticQris.trim();
+  if (base.slice(-8,-4) === '6304') base = base.slice(0,-8);
+  const tags = parseTLV(base)
+    .filter(t => !['54','55','56','57'].includes(t.tag))
+    .map(t => t.tag === '01' ? {tag:'01', val:'12'} : t);
+  const amountStr = String(Math.round(amount));
+  const tlv = (tag,val) => tag + String(val.length).padStart(2,'0') + val;
+  let result=''; let inserted=false;
+  for (const t of tags) {
+    if (!inserted && parseInt(t.tag) > 54) { result += tlv('54', amountStr); inserted = true; }
+    result += tlv(t.tag, t.val);
+  }
+  if (!inserted) result += tlv('54', amountStr);
+  result += '6304';
+  return result + crc16(result);
+}
+
+// ===== RENDER GAME LIST =====
+function renderGames(filter = '') {
+  const f = filter.toLowerCase();
+  $('#gameList').innerHTML = appGames
+    .filter(g => g.name.toLowerCase().includes(f) || g.publisher.toLowerCase().includes(f))
+    .map(g => `
+      <button data-game="${g.id}" class="game-card bg-white rounded-2xl p-3 shadow-sm btn-press text-left">
+        <div class="w-full aspect-square rounded-xl bg-gradient-to-br ${g.color} flex items-center justify-center text-4xl mb-2">${g.icon}</div>
+        <div class="font-semibold text-sm truncate">${g.name}</div>
+        <div class="text-xs text-gray-500 truncate">${g.publisher}</div>
+      </button>`).join('');
+  document.querySelectorAll('.game-card').forEach(b => b.onclick = () => selectGame(b.dataset.game));
+}
+
+// ===== NAVIGATION =====
+function goToStep(n) {
+  state.step = n;
+  for (let i = 1; i <= 5; i++) $('#step'+i).classList.toggle('hide', i !== n);
+  $('#adminLogin').classList.add('hide');
+  $('#adminPanel').classList.add('hide');
+  $('#btnBack').classList.toggle('hide', n === 1 || n === 5);
+  const titles = {1: appSettings.siteName, 2:'Pilih Nominal',3:'Pembayaran',4:'Bayar',5:'Status'};
+  $('#pageTitle').textContent = titles[n];
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// ===== GAME & PRODUCT =====
+function selectGame(id) {
+  state.game = appGames.find(g => g.id === id);
+  state.product = null; state.userId = ''; state.method = null; state.orderId = null;
+  $('#gameHeader').innerHTML = `
+    <div class="w-14 h-14 rounded-xl bg-gradient-to-br ${state.game.color} flex items-center justify-center text-3xl shrink-0">${state.game.icon}</div>
+    <div class="min-w-0">
+      <div class="font-bold truncate">${state.game.name}</div>
+      <div class="text-xs text-gray-500">${state.game.publisher}</div>
+    </div>`;
+  $('#inputUserId').value = '';
+  renderProducts();
+  goToStep(2);
+}
+function renderProducts() {
+  $('#productList').innerHTML = state.game.products.map(p => `
+    <button data-product="${p.id}" class="product-card bg-white rounded-xl p-3 shadow-sm btn-press text-left border-2 border-transparent">
+      <div class="text-xs text-gray-500 mb-1 truncate">${state.game.name}</div>
+      <div class="font-bold text-sm mb-1">${p.name}</div>
+      <div class="text-blue-600 font-bold text-sm">${rupiah(p.price)}</div>
+    </button>`).join('');
+  document.querySelectorAll('.product-card').forEach(b => b.onclick = () => selectProduct(b.dataset.product));
+}
+function selectProduct(id) {
+  state.product = state.game.products.find(p => p.id === id);
+  state.userId = $('#inputUserId').value.trim();
+  state.amount = state.product.price;
+  state.method = null;
+  $('#summary').innerHTML = `
+    <div class="flex justify-between"><span class="text-gray-500">Game</span><span class="font-medium">${state.game.name}</span></div>
+    <div class="flex justify-between"><span class="text-gray-500">Item</span><span class="font-medium">${state.product.name}</span></div>
+    <div class="flex justify-between"><span class="text-gray-500">User ID</span><span class="font-medium">${state.userId || '—'}</span></div>
+    <div class="flex justify-between pt-2 border-t border-gray-100"><span class="text-gray-500">Total</span><span class="font-bold text-blue-600 text-base">${rupiah(state.amount)}</span></div>`;
+  document.querySelectorAll('.pay-method').forEach(el => {
+    el.classList.remove('border-blue-500'); el.classList.add('border-transparent');
+    const r = el.querySelector('.radio-indicator'); r.classList.remove('bg-blue-500','border-blue-500'); r.innerHTML='';
+  });
+  $('#btnLanjut').disabled = true;
+  goToStep(3);
+}
+
+// ===== METODE PEMBAYARAN =====
+document.querySelectorAll('.pay-method').forEach(btn => {
+  btn.onclick = () => {
+    state.method = btn.dataset.method;
+    document.querySelectorAll('.pay-method').forEach(el => {
+      el.classList.remove('border-blue-500'); el.classList.add('border-transparent');
+      const r = el.querySelector('.radio-indicator'); r.classList.remove('bg-blue-500','border-blue-500'); r.innerHTML='';
+    });
+    btn.classList.remove('border-transparent'); btn.classList.add('border-blue-500');
+    const r = btn.querySelector('.radio-indicator');
+    r.classList.add('bg-blue-500','border-blue-500');
+    r.innerHTML = '<svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-9 9a1 1 0 01-1.4 0l-5-5a1 1 0 111.4-1.4L7 13.6l8.3-8.3a1 1 0 011.4 0z"/></svg>';
+    $('#btnLanjut').disabled = false;
+  };
+});
+
+$('#searchGame').oninput = e => renderGames(e.target.value);
+$('#inputUserId').oninput = e => { state.userId = e.target.value.trim(); };
+$('#btnBack').onclick = () => { if (state.step > 1) goToStep(state.step - 1); };
+
+// ===== BUAT ORDER & BAYAR =====
+$('#btnLanjut').onclick = async () => {
+  if (!state.method) return;
+  if (!state.userId) { toast('Isi User ID dulu ya'); goToStep(2); $('#inputUserId').focus(); return; }
+  if (!fbReady) { toast('Menyiapkan koneksi, coba lagi...'); return; }
+
+  goToStep(4);
+  $('#paymentBox').innerHTML = '<div class="text-center py-10 text-gray-500 text-sm">Menyiapkan pembayaran...</div>';
+
+  try {
+    const { addDoc, collection, serverTimestamp } = await import(FB_DB_URL);
+    const qrisString = state.method === 'qris' ? buildDynamicQris(appSettings.staticQris, state.amount) : null;
+
+    const ref = await addDoc(collection(db, 'orders'), {
+      gameId: state.game.id, gameName: state.game.name,
+      productId: state.product.id, productName: state.product.name,
+      userId: state.userId, amount: state.amount,
+      paymentMethod: state.method, status: 'pending',
+      qrisString, createdAt: serverTimestamp()
+    });
+    state.orderId = ref.id;
+
+    state.method === 'qris' ? renderQrisPayment(qrisString) : renderDanaPayment();
+  } catch (e) {
+    console.error(e);
+    $('#paymentBox').innerHTML = `<div class="bg-red-50 text-red-700 p-4 rounded-xl text-sm">Gagal membuat pesanan: ${e.message}</div>`;
+  }
+};
+
+function renderQrisPayment(qrisString) {
+  $('#paymentBox').innerHTML = `
+    <div class="bg-white rounded-2xl p-5 shadow-sm text-center">
+      <div class="inline-flex items-center gap-2 bg-purple-50 text-purple-700 px-3 py-1 rounded-full text-xs font-semibold mb-3">📱 QRIS</div>
+      <p class="text-sm text-gray-500 mb-1">Total Pembayaran</p>
+      <p class="text-2xl font-bold text-gray-900 mb-4">${rupiah(state.amount)}</p>
+      <div class="inline-block p-3 bg-white border-2 border-gray-200 rounded-2xl mb-4">
+        <canvas id="qrisCanvas"></canvas>
+      </div>
+      <p class="text-xs text-gray-500 mb-4 px-2">Scan pakai aplikasi apa pun yang mendukung QRIS (DANA, OVO, GoPay, BCA, dll)</p>
+      <button id="btnCopyQris" class="w-full bg-gray-100 py-3 rounded-xl font-semibold text-sm btn-press mb-2">📋 Salin String QRIS</button>
+      <button id="btnDoneQris" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold btn-press">Saya Sudah Bayar</button>
+    </div>
+    <p class="text-center text-xs text-gray-400 mt-4 px-4 break-all">Order ID: ${state.orderId}</p>`;
+
+  QRCode.toCanvas(document.getElementById('qrisCanvas'), qrisString, { width: 240, margin: 1, errorCorrectionLevel: 'M' }, err => { if (err) console.error(err); });
+
+  $('#btnCopyQris').onclick = async () => {
+    try { await navigator.clipboard.writeText(qrisString); toast('String QRIS disalin'); }
+    catch { toast('Gagal salin'); }
+  };
+  $('#btnDoneQris').onclick = () => showStatus();
+}
+
+function renderDanaPayment() {
+  $('#paymentBox').innerHTML = `
+    <div class="bg-white rounded-2xl p-5 shadow-sm text-center">
+      <div class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold mb-3">💙 DANA</div>
+      <p class="text-sm text-gray-500 mb-1">Total Pembayaran</p>
+      <p class="text-2xl font-bold text-gray-900 mb-4">${rupiah(state.amount)}</p>
+      <div class="bg-blue-50 rounded-xl p-4 mb-4 text-left">
+        <p class="text-xs text-gray-500 mb-1">Nomor DANA</p>
+        <div class="flex items-center justify-between">
+          <p class="text-xl font-bold text-blue-700">${appSettings.danaNumber}</p>
+          <button id="btnCopyDana" class="text-blue-600 text-xs font-semibold px-2 py-1">Salin</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">a/n ${appSettings.danaName}</p>
+      </div>
+      <div class="text-left bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-xs text-yellow-800 mb-4">
+        <p class="font-semibold mb-1">⚠️ Penting</p>
+        <p>Transfer <strong>sesuai nominal</strong> agar pesanan mudah diverifikasi.</p>
+      </div>
+      <button id="btnDoneDana" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold btn-press">Saya Sudah Transfer</button>
+    </div>
+    <p class="text-center text-xs text-gray-400 mt-4 px-4 break-all">Order ID: ${state.orderId}</p>`;
+  $('#btnCopyDana').onclick = async () => {
+    try { await navigator.clipboard.writeText(appSettings.danaNumber); toast('Nomor DANA disalin'); }
+    catch { toast('Gagal salin'); }
+  };
+  $('#btnDoneDana').onclick = () => showStatus();
+}
+
+// ===== STATUS REAL-TIME =====
+async function showStatus() {
+  goToStep(5);
+  $('#orderDetail').innerHTML = `
+    <div class="flex justify-between"><span class="text-gray-500">Order ID</span><span class="font-mono text-xs">${state.orderId}</span></div>
+    <div class="flex justify-between"><span class="text-gray-500">Game</span><span>${state.game.name}</span></div>
+    <div class="flex justify-between"><span class="text-gray-500">Item</span><span>${state.product.name}</span></div>
+    <div class="flex justify-between"><span class="text-gray-500">Total</span><span class="font-semibold">${rupiah(state.amount)}</span></div>`;
+  try {
+    const { doc, onSnapshot } = await import(FB_DB_URL);
+    if (unsubOrder) unsubOrder();
+    unsubOrder = onSnapshot(doc(db, 'orders', state.orderId), snap => {
+      if (snap.exists()) updateStatusUI(snap.data().status);
+    });
+  } catch (e) { console.error(e); }
+}
+
+function updateStatusUI(status) {
+  const map = {
+    pending: { icon:'⏳', title:'Menunggu Pembayaran', desc:'Pembayaran Anda sedang diverifikasi admin. Halaman ini akan update otomatis.' },
+    success: { icon:'✅', title:'Pembayaran Berhasil', desc:'Pesanan Anda sedang diproses. Terima kasih!' },
+    failed:  { icon:'❌', title:'Pembayaran Gagal',     desc:'Pembayaran tidak ditemukan. Silakan coba lagi.' },
+    expired: { icon:'⌛', title:'Kedaluwarsa',          desc:'Waktu pembayaran habis. Silakan buat pesanan baru.' },
+  };
+  const s = map[status] || map.pending;
+  $('#statusIcon').textContent = s.icon;
+  $('#statusTitle').textContent = s.title;
+  $('#statusDesc').textContent = s.desc;
+}
+
+// ==========================================================
+// ============ ADMIN (HIDDEN) ==============================
+// ==========================================================
+let auth = null;
+let adminOrderUnsub = null;
+let allOrders = [];
+let adminFilter = 'pending';
+let adminInited = false;
+
+// Trigger 1: URL #admin
+if (location.hash === '#admin') setTimeout(enterAdmin, 150);
+
+// Trigger 2: tap 5x judul
+let tapCount = 0, tapTimer;
+$('#pageTitle').addEventListener('click', () => {
+  tapCount++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(() => tapCount = 0, 800);
+  if (tapCount >= 5) { tapCount = 0; enterAdmin(); }
+});
+
+async function enterAdmin() {
+  for (let i = 1; i <= 5; i++) $('#step'+i).classList.add('hide');
+  $('#pageTitle').textContent = '🔒 Admin';
+  $('#btnBack').classList.add('hide');
+  window.scrollTo({ top:0 });
+
+  if (adminInited) return;
+  adminInited = true;
+
+  try {
+    const { getAuth, onAuthStateChanged } = await import(FB_AUTH_URL);
+    auth = getAuth();
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        $('#adminLogin').classList.add('hide');
+        $('#adminPanel').classList.remove('hide');
+        startOrdersListener();
+      } else {
+        $('#adminPanel').classList.add('hide');
+        $('#adminLogin').classList.remove('hide');
+        if (adminOrderUnsub) { adminOrderUnsub(); adminOrderUnsub = null; }
+      }
+    });
+  } catch (e) {
+    $('#adminLogin').classList.remove('hide');
+    $('#adminErr').textContent = 'Firebase Auth error: ' + e.message;
+  }
+}
+
+// Login form
+$('#adminForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('#adminErr').textContent = 'Memproses...';
+  try {
+    const { signInWithEmailAndPassword } = await import(FB_AUTH_URL);
+    await signInWithEmailAndPassword(auth, $('#adminEmail').value.trim(), $('#adminPass').value);
+    $('#adminErr').textContent = '';
+    $('#adminPass').value = '';
+  } catch (err) {
+    $('#adminErr').textContent = 'Login gagal: ' + (err.code || err.message);
+  }
+});
+
+// Logout
+$('#adminLogout').onclick = async () => {
+  try {
+    const { signOut } = await import(FB_AUTH_URL);
+    await signOut(auth);
+    location.hash = '';
+    location.reload();
+  } catch (e) { toast('Logout gagal'); }
+};
+
+// Tab Navigation
+document.querySelectorAll('.admin-tab').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.admin-tab').forEach(b => { b.classList.remove('bg-blue-600','text-white'); b.classList.add('bg-white','text-gray-600'); });
+    btn.classList.remove('bg-white','text-gray-600'); btn.classList.add('bg-blue-600','text-white');
+    
+    document.querySelectorAll('[id^="adminTab"]').forEach(el => el.classList.add('hide'));
+    
+    if (btn.dataset.tab === 'orders') { $('#adminTabOrders').classList.remove('hide'); renderAdminOrders(); }
+    if (btn.dataset.tab === 'settings') { 
+      $('#adminTabSettings').classList.remove('hide'); 
+      $('#setSiteName').value = appSettings.siteName;
+      $('#setQris').value = appSettings.staticQris;
+      $('#setDanaNum').value = appSettings.danaNumber;
+      $('#setDanaName').value = appSettings.danaName;
+    }
+    if (btn.dataset.tab === 'games') { 
+      $('#adminTabGames').classList.remove('hide'); 
+      $('#gamesJsonInput').value = JSON.stringify(appGames, null, 2); 
+    }
+  };
+});
+
+// Save Settings
+$('#btnSaveSettings').onclick = async () => {
+  try {
+    const { setDoc, doc } = await import(FB_DB_URL);
+    const newSettings = {
+      siteName: $('#setSiteName').value.trim(),
+      staticQris: $('#setQris').value.trim(),
+      danaNumber: $('#setDanaNum').value.trim(),
+      danaName: $('#setDanaName').value.trim()
+    };
+    await setDoc(doc(db, 'settings', 'config'), newSettings);
+    appSettings = newSettings;
+    $('#pageTitle').textContent = '🔒 Admin';
+    toast('Setelan Web berhasil disimpan!');
+  } catch (e) { toast('Gagal simpan: ' + e.message); }
+};
+
+// Save Games
+$('#btnSaveGames').onclick = async () => {
+  try {
+    const parsed = JSON.parse($('#gamesJsonInput').value);
+    const { setDoc, doc } = await import(FB_DB_URL);
+    await setDoc(doc(db, 'settings', 'games'), { list: parsed });
+    appGames = parsed;
+    toast('Daftar Produk berhasil disimpan!');
+  } catch (e) { 
+    alert('Format JSON salah! Periksa kembali tanda koma atau kurung kurawal.\n\nPesan Error: ' + e.message); 
+  }
+};
+
+// Firestore listener untuk admin
+function startOrdersListener() {
+  if (!fbReady) { setTimeout(startOrdersListener, 250); return; }
+  import(FB_DB_URL).then(mod => {
+    if (adminOrderUnsub) adminOrderUnsub();
+    const q = mod.query(
+      mod.collection(db, 'orders'),
+      mod.orderBy('createdAt', 'desc'),
+      mod.limit(100)
+    );
+    adminOrderUnsub = mod.onSnapshot(q, snap => {
+      allOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderAdminOrders();
+    }, err => {
+      $('#adminOrders').innerHTML = `<div class="bg-red-50 p-4 rounded-xl text-sm text-red-700">Gagal memuat: ${err.message}<br><br>Pastikan Firestore Rules sudah mengizinkan admin membaca dan mengubah order.</div>`;
+    });
+  });
+}
+
+function renderAdminOrders() {
+  const filtered = adminFilter === 'all' ? allOrders : allOrders.filter(o => o.status === adminFilter);
+  if (!filtered.length) {
+    $('#adminOrders').innerHTML = `<div class="text-center text-gray-400 py-10 text-sm">Tidak ada order pada filter ini.</div>`;
+    return;
+  }
+  $('#adminOrders').innerHTML = filtered.map(o => {
+    let tgl = '-';
+    try { tgl = o.createdAt?.toDate().toLocaleString('id-ID'); } catch(_) {}
+    const badge = ({
+      pending: 'bg-yellow-100 text-yellow-700',
+      success: 'bg-green-100 text-green-700',
+      failed:  'bg-red-100 text-red-700',
+      expired: 'bg-gray-100 text-gray-700',
+    })[o.status] || 'bg-gray-100';
+    return `
+      <div class="bg-white rounded-xl p-3 shadow-sm mb-2">
+        <div class="flex justify-between items-start gap-2 mb-1">
+          <div class="min-w-0 flex-1">
+            <div class="font-semibold text-sm truncate">${o.gameName || o.gameId} — ${o.productName || o.productId}</div>
+            <div class="text-xs text-gray-500 break-all">ID: ${o.userId || '-'}</div>
+          </div>
+          <span class="text-[10px] font-semibold px-2 py-1 rounded-full ${badge} whitespace-nowrap">${o.status}</span>
+        </div>
+        <div class="text-sm font-bold text-blue-600 mb-1">${rupiah(o.amount)}</div>
+        <div class="text-[10px] text-gray-400 mb-1">${(o.paymentMethod || '').toUpperCase()} • ${tgl}</div>
+        <div class="text-[10px] text-gray-400 mb-2 break-all">${o.id}</div>
+        ${o.status === 'pending' ? `
+        <div class="flex gap-2">
+          <button data-oid="${o.id}" data-st="success" class="admin-act flex-1 bg-green-600 text-white text-xs font-semibold py-2 rounded-lg btn-press">✓ Sukses</button>
+          <button data-oid="${o.id}" data-st="failed" class="admin-act flex-1 bg-red-500 text-white text-xs font-semibold py-2 rounded-lg btn-press">✕ Gagal</button>
+        </div>` : ''}
+        ${o.status !== 'pending' ? `
+        <button data-oid="${o.id}" data-st="pending" class="admin-act w-full bg-gray-100 text-gray-600 text-xs font-semibold py-2 rounded-lg btn-press mt-1">↺ Reset ke Pending</button>` : ''}
+      </div>`;
+  }).join('');
+
+  document.querySelectorAll('.admin-act').forEach(b => {
+    b.onclick = async () => {
+      if (!confirm(`Ubah status order menjadi "${b.dataset.st}"?`)) return;
+      try {
+        const mod = await import(FB_DB_URL);
+        await mod.updateDoc(mod.doc(db, 'orders', b.dataset.oid), {
+          status: b.dataset.st,
+          updatedAt: mod.serverTimestamp()
+        });
+        toast('Status diperbarui');
+      } catch (e) { toast('Gagal: ' + e.message); }
+    };
+  });
+}
+
+// Filter tabs
+document.querySelectorAll('.admin-filter').forEach(b => {
+  b.onclick = () => {
+    adminFilter = b.dataset.filter;
+    document.querySelectorAll('.admin-filter').forEach(x => {
+      x.classList.remove('bg-blue-600','text-white'); x.classList.add('bg-white','text-gray-600');
+    });
+    b.classList.remove('bg-white','text-gray-600'); b.classList.add('bg-blue-600','text-white');
+    renderAdminOrders();
+  };
+});
+
+// ===== START =====
+// (Fungsi loadSettings akan memanggil renderGames & goToStep)
+</script>
+</body>
+</html>
