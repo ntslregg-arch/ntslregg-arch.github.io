@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TopUpZone — Top Up Game Termurah & Terlengkap</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0f1a">
+<style>
+:root{
+  --bg:#0b0f1a; --bg-2:#111827; --card:#151d2e; --card-2:#1b2438;
+  --line:#25304a; --txt:#e8eefc; --muted:#8b98b8;
+  --accent:#7c5cff; --accent-2:#22d3ee; --ok:#22c55e; --warn:#f59e0b;
+  --wa:#25d366; --tg:#229ED9; --radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(600px 400px at 10% 0%,rgba(124,92,255,.22),transparent 60%),radial-gradient(600px 400px at 90% 10%,rgba(34,211,238,.15),transparent 60%);pointer-events:none;z-index:0}
+.wrap{max-width:1200px;margin:0 auto;padding:0 18px;position:relative;z-index:1}
+header{position:sticky;top:0;z-index:100;background:rgba(11,15,26,.82);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:20px;height:70px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.5px;white-space:nowrap}
+.logo-badge{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-size:18px;box-shadow:0 6px 20px rgba(124,92,255,.45)}
+.logo span.grad{background:linear-gradient(90deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{display:flex;gap:22px;margin-left:14px;font-size:14px;color:var(--muted)}
+.nav-links a{color:inherit;text-decoration:none;transition:.2s;cursor:pointer}
+.nav-links a:hover{color:var(--txt)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px;min-width:210px;transition:.25s}
+.search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,255,.15)}
+.search input{background:none;border:none;outline:none;color:var(--txt);font-size:14px;width:100%;font-family:inherit}
+.search input::placeholder{color:#5c6b8a}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:600;border-radius:11px;transition:.22s;font-size:14px}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#5b3df5);color:#fff;padding:10px 20px;box-shadow:0 6px 18px rgba(124,92,255,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(124,92,255,.5)}
+.btn-ghost{background:var(--card);color:var(--txt);border:1px solid var(--line);padding:10px 16px}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent-2)}
+.hero{padding:44px 0 30px;display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center}
+.hero h1{font-size:44px;line-height:1.15;letter-spacing:-1.5px;font-weight:800;margin-bottom:14px}
+.hero h1 .hl{background:linear-gradient(90deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:16px;max-width:520px;margin-bottom:24px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.stats{display:flex;gap:28px;margin-top:32px;flex-wrap:wrap}
+.stat b{display:block;font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat small{color:var(--muted);font-size:12.5px;letter-spacing:.3px}
+.promo{position:relative;border-radius:22px;padding:26px;background:linear-gradient(150deg,rgba(124,92,255,.28),rgba(34,211,238,.14));border:1px solid rgba(124,92,255,.4);overflow:hidden}
+.promo::after{content:'';position:absolute;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.35),transparent 70%);right:-80px;top:-80px}
+.promo .tag{display:inline-block;background:rgba(34,211,238,.16);color:var(--accent-2);border:1px solid rgba(34,211,238,.35);border-radius:999px;padding:4px 12px;font-size:11.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:14px}
+.promo h3{font-size:24px;line-height:1.25;margin-bottom:8px;letter-spacing:-.5px}
+.promo p{color:#b9c4dd;font-size:13.5px;margin-bottom:18px;max-width:none}
+.code-box{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(11,15,26,.6);border:1px dashed rgba(34,211,238,.45);border-radius:12px;padding:11px 14px;position:relative;z-index:2}
+.code-box code{font-family:ui-monospace,monospace;font-weight:800;letter-spacing:2px;color:var(--accent-2);font-size:15px}
+.code-box button{background:var(--accent-2);color:#04212b;border:none;border-radius:8px;padding:6px 13px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit;transition:.2s}
+.code-box button:hover{filter:brightness(1.15)}
+.section{padding:30px 0}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.section-head h2{font-size:25px;letter-spacing:-.7px;display:flex;align-items:center;gap:10px}
+.section-head h2::before{content:'';width:5px;height:24px;border-radius:4px;background:linear-gradient(180deg,var(--accent-2),var(--accent))}
+.section-head p{color:var(--muted);font-size:13.5px}
+.chips{display:flex;gap:9px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-bottom:22px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;background:var(--card);border:1px solid var(--line);color:var(--muted);padding:8px 17px;border-radius:999px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.22s;font-family:inherit;white-space:nowrap}
+.chip:hover{color:var(--txt);border-color:#3a4a6d}
+.chip.active{background:linear-gradient(135deg,var(--accent),#5b3df5);color:#fff;border-color:transparent;box-shadow:0 5px 16px rgba(124,92,255,.35)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:16px}
+.game-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:.28s;position:relative;display:flex;flex-direction:column}
+.game-card:hover{transform:translateY(-6px);border-color:rgba(124,92,255,.65);box-shadow:0 16px 40px rgba(0,0,0,.5),0 0 0 1px rgba(124,92,255,.25)}
+.cover{height:132px;display:grid;place-items:center;font-size:52px;position:relative;overflow:hidden}
+.cover::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(21,29,46,.95))}
+.cover .badge{position:absolute;top:9px;left:9px;z-index:2;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:4px 9px;border-radius:7px;color:#fff;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18)}
+.cover .badge.hot{background:linear-gradient(135deg,#ef4444,#f97316);border:none}
+.cover .badge.new{background:linear-gradient(135deg,#22c55e,#10b981);border:none}
+.cover .emoji{position:relative;z-index:1;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));transition:.35s}
+.game-card:hover .emoji{transform:scale(1.13) rotate(-4deg)}
+.game-info{padding:12px 13px 14px;flex:1;display:flex;flex-direction:column;gap:5px}
+.game-info h4{font-size:14px;font-weight:700;line-height:1.3;letter-spacing:-.2px}
+.game-info .cat{font-size:11.5px;color:var(--muted);letter-spacing:.2px}
+.game-info .price{font-size:12.5px;font-weight:700;color:var(--accent-2);margin-top:auto;padding-top:6px}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:8px}
+.feature{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;transition:.25s}
+.feature:hover{border-color:rgba(34,211,238,.4);transform:translateY(-3px)}
+.feature .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;background:linear-gradient(135deg,rgba(124,92,255,.25),rgba(34,211,238,.18));border:1px solid rgba(124,92,255,.3);margin-bottom:13px}
+.feature h4{font-size:15px;margin-bottom:5px}
+.feature p{font-size:13px;color:var(--muted);line-height:1.55}
+/* Riwayat & Ulasan */
+.riwayat-item, .review-item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;transition:.2s}
+.review-item{flex-direction:column;align-items:flex-start}
+.review-head{display:flex;justify-content:space-between;width:100%;margin-bottom:6px}
+.review-stars{color:var(--warn);font-size:14px}
+.riwayat-item:hover{border-color:rgba(124,92,255,.5);transform:translateY(-1px)}
+.riwayat-item .info{flex:1;min-width:200px}
+.riwayat-item .info h4{font-size:14px;margin-bottom:3px}
+.riwayat-item .info small{color:var(--muted);font-size:12px;font-family:ui-monospace,monospace}
+.riwayat-item .right{display:flex;align-items:center;gap:14px}
+.riwayat-item .right b{color:var(--accent-2);font-size:14px}
+.riwayat-empty{text-align:center;padding:50px 20px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px}
+.riwayat-empty .ic{font-size:42px;margin-bottom:10px;opacity:.6}
+.status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px;display:inline-block}
+.status.pending{background:rgba(245,158,11,.15);color:#f59e0b}
+.status.paid{background:rgba(34,211,238,.15);color:#22d3ee}
+.status.success{background:rgba(34,197,94,.15);color:#22c55e}
+.status.failed{background:rgba(239,68,68,.15);color:#ef4444}
+.status.habis{background:rgba(239,68,68,.15);color:#ef4444}
+/* Modal & Overlay */
+.overlay{position:fixed;inset:0;z-index:200;background:rgba(5,8,15,.78);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto}
+.overlay.open{display:flex;animation:fadeIn .22s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--bg-2);border:1px solid var(--line);border-radius:22px;width:100%;max-width:760px;margin:auto;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.7);animation:slideUp .3s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:none}}
+.modal-head{display:flex;align-items:center;gap:14px;padding:18px 22px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(124,92,255,.14),transparent)}
+.modal-head .ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:26px;background:var(--card-2);border:1px solid var(--line);flex-shrink:0}
+.modal-head h3{font-size:18px;letter-spacing:-.4px;line-height:1.25}
+.modal-head small{color:var(--muted);font-size:12.5px}
+.modal-head .close{margin-left:auto;background:var(--card);border:1px solid var(--line);color:var(--muted);width:34px;height:34px;border-radius:10px;font-size:18px;cursor:pointer;transition:.2s;display:grid;place-items:center;flex-shrink:0;font-family:inherit;line-height:1}
+.modal-head .close:hover{color:#fff;background:#ef4444;border-color:#ef4444}
+.modal-body{padding:22px}
+.step-label{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.step-label .num{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-size:11px}
+.step{margin-bottom:24px}
+.step:last-child{margin-bottom:0}
+.denoms{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.denom{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:12px 13px;cursor:pointer;transition:.2s;font-family:inherit;text-align:left;display:flex;flex-direction:column;gap:3px;position:relative}
+.denom:hover{border-color:#3f4f75;background:var(--card-2)}
+.denom.sel{border-color:var(--accent);background:rgba(124,92,255,.14);box-shadow:0 0 0 3px rgba(124,92,255,.15)}
+.denom.habis{opacity:0.5;cursor:not-allowed;background:var(--bg-2);pointer-events:none;filter:grayscale(1)}
+.denom b{font-size:13.5px;color:var(--txt);font-weight:700}
+.denom span{font-size:12.5px;color:var(--accent-2);font-weight:700}
+.denom .off{position:absolute;top:-7px;right:8px;font-size:9.5px;font-weight:800;background:linear-gradient(135deg,#ef4444,#f97316);color:#fff;padding:2px 7px;border-radius:6px;letter-spacing:.4px}
+.denom.habis .off{background:#ef4444;padding:2px 8px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12.5px;color:var(--muted);font-weight:600}
+.field input,.field select,.field textarea{background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:11px 14px;color:var(--txt);font-size:14px;font-family:inherit;outline:none;transition:.2s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,255,.14)}
+.field input::placeholder{color:#5c6b8a}
+.field .hint{font-size:11px;color:var(--muted);font-style:italic}
+.pays{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.pay{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:11px 8px;cursor:pointer;transition:.2s;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;position:relative}
+.pay:hover{border-color:#3f4f75}
+.pay.sel{border-color:var(--accent-2);background:rgba(34,211,238,.1);box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+.pay .pi{font-size:20px;line-height:1}
+.pay small{font-size:11px;color:var(--muted);font-weight:600}
+.pay .rec{position:absolute;top:-7px;right:5px;font-size:9px;font-weight:800;background:linear-gradient(135deg,#22c55e,#10b981);color:#fff;padding:2px 6px;border-radius:6px;letter-spacing:.3px}
+.voucher-wrap{margin-bottom:20px}
+.voucher-row{display:flex;gap:8px;margin-bottom:8px}
+.voucher-row input{flex:1;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:11px 14px;color:var(--txt);font-size:13.5px;font-family:inherit;outline:none;text-transform:uppercase;transition:.2s}
+.voucher-row input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,255,.14)}
+.voucher-row input::placeholder{text-transform:none;color:#5c6b8a}
+.voucher-row button{padding:0 18px;background:var(--accent-2);color:#04212b;border:none;border-radius:11px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit;transition:.2s;white-space:nowrap}
+.voucher-row button:hover{filter:brightness(1.1)}
+.voucher-msg{font-size:12px;min-height:16px;font-weight:600}
+.voucher-msg.ok{color:var(--ok)}
+.voucher-msg.err{color:#ef4444}
+.voucher-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.voucher-pill{background:var(--card-2);border:1px solid var(--line);color:var(--accent-2);padding:4px 11px;border-radius:999px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.3px;transition:.2s}
+.voucher-pill:hover{border-color:var(--accent-2);background:rgba(34,211,238,.1)}
+.summary{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:4px}
+.summary .row{display:flex;justify-content:space-between;gap:14px;font-size:13.5px;padding:5px 0;color:var(--muted)}
+.summary .row b{color:var(--txt);font-weight:600;text-align:right}
+.summary .row.total{border-top:1px dashed var(--line);margin-top:9px;padding-top:12px;font-size:16px;color:var(--txt);font-weight:800}
+.summary .row.total b{font-size:19px;background:linear-gradient(90deg,var(--accent-2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.modal-foot{padding:0 22px 22px}
+.btn-buy{width:100%;padding:15px;font-size:15.5px;font-weight:800;letter-spacing:.3px;background:linear-gradient(135deg,var(--accent),#5b3df5);color:#fff;border:none;border-radius:14px;cursor:pointer;font-family:inherit;transition:.25s;box-shadow:0 8px 26px rgba(124,92,255,.4)}
+.btn-buy:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 34px rgba(124,92,255,.55)}
+.btn-buy:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.wa-btn{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;padding:13px 18px;border-radius:12px;font-family:inherit;font-weight:700;font-size:13.5px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:10px;box-shadow:0 6px 18px rgba(37,211,102,.35)}
+.wa-btn:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(37,211,102,.5)}
+.wa-btn.small{padding:7px 12px;font-size:12px;width:auto;margin-top:0;box-shadow:none;border-radius:8px}
+.google-btn{background:#fff;color:#333;border:none;padding:12px;border-radius:12px;width:100%;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;transition:.2s}
+.google-btn:hover{background:#f1f1f1}
+.success{text-align:center;padding:20px 10px 6px}
+.success .check{width:78px;height:78px;border-radius:50%;margin:0 auto 18px;background:linear-gradient(135deg,rgba(34,197,94,.25),rgba(16,185,129,.12));border:2px solid rgba(34,197,94,.5);display:grid;place-items:center;font-size:36px;animation:pop .45s cubic-bezier(.2,.9,.3,1.4)}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+.success h3{font-size:22px;margin-bottom:6px;letter-spacing:-.5px}
+.success p{color:var(--muted);font-size:13.5px;margin-bottom:20px}
+.invoice{background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:16px;text-align:left;margin-bottom:20px}
+.invoice .row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;color:var(--muted);align-items:center;gap:12px}
+.invoice .row b{color:var(--txt);text-align:right;word-break:break-word}
+.invoice .row b.mono{font-family:ui-monospace,monospace;color:var(--accent-2);letter-spacing:.5px}
+.qris-box{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 16px;margin-bottom:16px}
+.qris-box img{max-width:240px;width:100%;border-radius:12px;border:2px solid var(--line);background:#fff;padding:8px;display:block;margin:0 auto 10px}
+.qris-box .qris-info{font-size:12px;color:var(--muted);margin-bottom:4px}
+.qris-box .qris-amount{font-size:20px;font-weight:800;color:var(--accent-2);margin:6px 0 12px}
+.admin-modal{max-width:1000px}
+.admin-tabs{display:flex;gap:4px;padding:0 22px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;background:rgba(0,0,0,.15)}
+.admin-tabs::-webkit-scrollbar{display:none}
+.admin-tab{background:none;border:none;color:var(--muted);padding:14px 16px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:.2s}
+.admin-tab:hover{color:var(--txt)}
+.admin-tab.active{color:var(--accent-2);border-bottom-color:var(--accent-2)}
+.admin-body{padding:22px;max-height:70vh;overflow-y:auto}
+.admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.admin-stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.admin-stat small{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700;display:block;margin-bottom:6px}
+.admin-stat b{font-size:22px;font-weight:800;display:block;letter-spacing:-.5px}
+.admin-stat.green b{color:var(--ok)}
+.admin-stat.cyan b{color:var(--accent-2)}
+.admin-stat.warn b{color:var(--warn)}
+.admin-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.admin-filter input,.admin-filter select{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--txt);font-size:13px;font-family:inherit;outline:none}
+.admin-filter input:focus,.admin-filter select:focus{border-color:var(--accent)}
+.admin-filter input{flex:1;min-width:140px}
+.admin-order{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.admin-order .ao-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.admin-order .ao-head h4{font-size:14px;margin-bottom:2px}
+.admin-order .ao-head small{color:var(--muted);font-size:12px;font-family:ui-monospace,monospace}
+.admin-order .ao-meta{font-size:12.5px;color:var(--muted);margin-bottom:10px;line-height:1.7}
+.admin-order .ao-meta b{color:var(--txt);font-weight:600}
+.admin-order .ao-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ao-btn{padding:7px 14px;border:none;border-radius:9px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:.2s}
+.ao-btn.approve{background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.4)}
+.ao-btn.approve:hover{background:#22c55e;color:#04210f}
+.ao-btn.reject{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.4)}
+.ao-btn.reject:hover{background:#ef4444;color:#fff}
+.ao-btn.mark{background:rgba(34,211,238,.15);color:#22d3ee;border:1px solid rgba(34,211,238,.4)}
+.ao-btn.mark:hover{background:#22d3ee;color:#04212b}
+.ao-btn.del{background:var(--card-2);color:var(--muted);border:1px solid var(--line)}
+.ao-btn.del:hover{color:#ef4444;border-color:#ef4444}
+.admin-form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.admin-form h4{font-size:14px;margin-bottom:12px;color:var(--accent-2)}
+.admin-form .fields{margin-bottom:12px}
+.admin-btn{background:linear-gradient(135deg,var(--accent),#5b3df5);color:#fff;border:none;padding:9px 18px;border-radius:10px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:.2s;margin-right:8px;margin-top:4px}
+.admin-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,92,255,.4)}
+.admin-btn.ghost{background:var(--card-2);border:1px solid var(--line);color:var(--txt)}
+.price-row{display:grid;grid-template-columns:1fr 1fr auto auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.price-row:last-child{border-bottom:none}
+.price-row .pr-label{color:var(--txt);font-weight:600}
+.price-row input{background:var(--bg-2);border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--txt);font-size:13px;font-family:inherit;outline:none;width:100%}
+.price-row input:focus{border-color:var(--accent)}
+.price-row .pr-save{background:var(--card-2);border:1px solid var(--line);color:var(--accent-2);padding:6px 12px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:700;font-size:12px;transition:.2s}
+.price-row .pr-save:hover{background:var(--accent-2);color:#04212b}
+.login-form{max-width:380px;margin:30px auto;text-align:center}
+.login-form .ic{font-size:48px;margin-bottom:14px}
+.login-form h3{font-size:20px;margin-bottom:6px}
+.login-form p{color:var(--muted);font-size:13px;margin-bottom:20px}
+.login-form .field{text-align:left}
+.login-form .admin-btn{width:100%;padding:13px;font-size:14.5px;margin-top:12px;margin-right:0}
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,120px);background:var(--card-2);border:1px solid var(--accent);color:var(--txt);padding:13px 22px;border-radius:12px;font-size:14px;font-weight:600;z-index:300;transition:.35s cubic-bezier(.2,.9,.3,1.2);box-shadow:0 14px 40px rgba(0,0,0,.6);pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0)}
+footer{margin-top:50px;border-top:1px solid var(--line);padding:40px 0 26px;background:rgba(17,24,39,.5)}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:32px;margin-bottom:30px}
+.foot-grid h5{font-size:13.5px;margin-bottom:13px;letter-spacing:.3px}
+.foot-grid p{font-size:13px;color:var(--muted);max-width:290px;line-height:1.65}
+.foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.foot-grid ul a{color:var(--muted);text-decoration:none;font-size:13px;transition:.2s;cursor:pointer}
+.foot-grid ul a:hover{color:var(--accent-2)}
+.foot-bottom{border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);align-items:center}
+.admin-link{background:none;border:1px solid var(--line);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;transition:.2s}
+.admin-link:hover{color:var(--accent-2);border-color:var(--accent-2)}
+@media(max-width:900px){.hero{grid-template-columns:1fr;gap:26px;padding:32px 0 20px}.hero h1{font-size:34px}.foot-grid{grid-template-columns:1fr 1fr;gap:26px}.nav-links{display:none}}
+@media(max-width:640px){.nav{height:62px;gap:12px}.logo{font-size:17px}.logo-badge{width:32px;height:32px;font-size:16px}.search{display:none}.nav-right .btn-ghost{display:none}.hero h1{font-size:28px;letter-spacing:-1px}.hero p{font-size:14.5px}.stats{gap:20px}.stat b{font-size:19px}.grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px}.cover{height:108px;font-size:42px}.game-info h4{font-size:13px}.fields{grid-template-columns:1fr}.modal-body{padding:16px}.modal-head{padding:14px 16px}.modal-foot{padding:0 16px 18px}.denoms{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.foot-grid{grid-template-columns:1fr}.overlay{padding:12px}.riwayat-item .right{width:100%;justify-content:space-between}.admin-tabs{padding:0 14px}.admin-body{padding:16px}.price-row{grid-template-columns:1fr auto auto;gap:6px}.price-row input{grid-column:1/-1}.price-row .pr-label{grid-column:1/-1}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><div class="logo-badge">⚡</div><div>TopUp<span class="grad">Zone</span></div></div>
+    <nav class="nav-links">
+      <a href="#games">Semua Game</a>
+      <a href="#riwayat">Riwayat</a>
+      <a href="#ulasan">Ulasan</a>
+      <a onclick="openCek()">Cek Transaksi</a>
+    </nav>
+    <div class="nav-right">
+      <div class="search"><span style="font-size:14px;opacity:.6">🔍</span><input type="text" id="searchInput" placeholder="Cari game atau voucher..."></div>
+      
+      <!-- Area Login Customer -->
+      <div id="userArea" style="display:flex;align-items:center;gap:10px">
+        <button class="btn btn-primary" id="btnLogin" onclick="openLogin()">Masuk</button>
+        <div id="userProfile" style="display:none;align-items:center;gap:8px;cursor:pointer" onclick="openProfile()">
+          <img id="userAvatar" src="" style="width:32px;height:32px;border-radius:50%;border:2px solid var(--accent)">
+          <span id="userName" style="font-size:14px;font-weight:600"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <h1>Top Up Game <span class="hl">Termurah</span><br>& Terlengkap di Indonesia</h1>
+      <p>Proses instan 24 jam, harga bersaing, dan 100% aman. Lebih dari 500+ game & voucher digital siap kamu isi kapan saja.</p>
+      <div class="hero-cta">
+        <a href="#games"><button class="btn btn-primary" style="padding:13px 26px;font-size:15px">🎮 Top Up Sekarang</button></a>
+        <button class="btn btn-ghost" style="padding:13px 22px" onclick="openCek()">Cek Transaksi</button>
+      </div>
+    </div>
+    <div class="promo">
+      <span class="tag">Promo Spesial</span>
+      <h3>Diskon 10%<br>Semua Diamond</h3>
+      <p>Pakai kode kupon di bawah saat checkout dan hemat hingga Rp 50.000 untuk transaksi pertamamu.</p>
+      <div class="code-box"><code>TOPUPNEW10</code><button onclick="copyCode(this)">Salin</button></div>
+    </div>
+  </section>
+
+  <section class="section" id="games">
+    <div class="section-head"><div><h2>Pilih Game Favoritmu</h2><p id="resultCount" style="margin-top:4px">Menampilkan semua produk</p></div></div>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="gameGrid"></div>
+  </section>
+
+  <!-- SECTION ULASAN BARU -->
+  <section class="section" id="ulasan">
+    <div class="section-head">
+      <div><h2>Ulasan Pembeli</h2><p>Testimoni asli dari para gamers</p></div>
+      <button class="btn btn-primary" onclick="openReviewForm()">+ Tulis Ulasan</button>
+    </div>
+    <div id="reviewList"></div>
+  </section>
+
+  <section class="section" id="riwayat">
+    <div class="section-head"><div><h2>Riwayat Transaksi</h2><p id="riwayatSubtitle">Transaksi kamu tersimpan otomatis di cloud</p></div></div>
+    <div id="riwayatList"></div>
+  </section>
+</div>
+
+<footer id="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><div class="logo" style="margin-bottom:12px"><div class="logo-badge">⚡</div><div>TopUp<span class="grad">Zone</span></div></div><p>Platform top up game dan voucher digital termurah, tercepat, dan terlengkap di Indonesia.</p></div>
+      <div><h5>Produk</h5><ul><li><a href="#games">Mobile Legends</a></li><li><a href="#games">Free Fire</a></li><li><a href="#games">Genshin Impact</a></li><li><a href="#games">Voucher Digital</a></li></ul></div>
+      <div><h5>Bantuan</h5><ul><li><a onclick="toast('Halaman cara order');return false">Cara Order</a></li><li><a onclick="openCek()">Cek Transaksi</a></li><li><a onclick="contactAdmin()">Hubungi Admin</a></li><li><a onclick="toast('Halaman syarat & ketentuan');return false">Syarat & Ketentuan</a></li></ul></div>
+      <div><h5>Pembayaran</h5><ul><li><a onclick="toast('QRIS pribadi admin')">QRIS</a></li><li><a onclick="toast('DANA / OVO / GoPay')">E-Wallet</a></li><li><a onclick="toast('ShopeePay')">ShopeePay</a></li><li><a onclick="toast('Transfer Bank')">Transfer Bank</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© 2025 TopUpZone. Seluruh hak cipta dilindungi.</span><button class="admin-link" onclick="openAdmin()">🔐 Admin Panel</button></div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP (FITUR 5) -->
+<a href="javascript:void(0)" onclick="contactAdmin()" style="position:fixed;bottom:24px;right:24px;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 6px 20px rgba(37,211,102,.4);z-index:999;text-decoration:none;transition:.2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <svg style="width:32px;height:32px;fill:white" viewBox="0 0 24 24"><path d="M12.031 0C5.383 0 0 5.383 0 12.031c0 2.124.554 4.195 1.607 6.011L.152 24l6.104-1.601c1.755.988 3.762 1.512 5.775 1.512 6.648 0 12.031-5.383 12.031-12.031S18.679 0 12.031 0zm0 21.865c-1.839 0-3.639-.494-5.215-1.429l-.374-.221-3.87 1.016 1.035-3.774-.241-.387A9.813 9.813 0 012.18 12.03C2.18 6.576 6.577 2.18 12.031 2.18c5.454 0 9.851 4.396 9.851 9.851s-4.397 9.834-9.851 9.834zM17.123 14.9c-.273-.136-1.613-.796-1.863-.887-.25-.091-.432-.136-.614.136-.182.273-.705.887-.864 1.068-.159.182-.318.205-.591.068-.273-.136-1.155-.426-2.199-1.357-.812-.725-1.359-1.62-1.518-1.893-.159-.273-.017-.421.12-.556.123-.121.273-.318.409-.477.136-.159.182-.273.273-.455.091-.182.045-.341-.023-.477-.068-.136-.614-1.477-.841-2.023-.221-.531-.447-.459-.614-.468l-.523-.009c-.182 0-.477.068-.727.341-.25.273-.955.932-.955 2.273s.977 2.636 1.114 2.818c.136.182 1.923 2.936 4.659 4.116.651.281 1.159.449 1.555.575.654.208 1.249.179 1.72.109.523-.078 1.613-.659 1.84-1.295.227-.636.227-1.182.159-1.295-.068-.114-.25-.182-.523-.318z"/></svg>
+</a>
+
+<!-- MODAL & OVERLAY -->
+<div class="overlay" id="loginOverlay"><div class="modal" style="max-width:400px" id="loginModal"></div></div>
+<div class="overlay" id="reviewOverlay"><div class="modal" style="max-width:500px" id="reviewModal"></div></div>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="overlay" id="cekOverlay"><div class="modal" style="max-width:560px">
+  <div class="modal-head"><div class="ic">🔍</div><div><h3>Cek Status Transaksi</h3><small>Masukkan nomor invoice kamu</small></div><button class="close" onclick="closeCek()">✕</button></div>
+  <div class="modal-body">
+    <div class="fields"><div class="field full"><label>Nomor Invoice</label><input type="text" id="cekInvoice" placeholder="Contoh: TZ123456789" autocomplete="off"></div></div>
+    <button class="btn-buy" onclick="doCek()" style="margin-top:14px">Cek Transaksi</button>
+    <div id="cekResult" style="margin-top:16px"></div>
+  </div>
+</div></div>
+<div class="overlay" id="adminOverlay"><div class="modal admin-modal" id="adminModal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs,
+  updateDoc, deleteDoc, onSnapshot, query, where, orderBy,
+  serverTimestamp, enableIndexedDbPersistence, deleteField, limit
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+  GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC8wyIGyM7nBB6_bgZW2l7Ncej1uaGZH2w",
+  authDomain: "topupzone-82952.firebaseapp.com",
+  projectId: "topupzone-82952",
+  storageBucket: "topupzone-82952.firebasestorage.app",
+  messagingSenderId: "276675361521",
+  appId: "1:276675361521:web:8845dc83542b6b97a30750",
+  measurementId: "G-YDZK1FYB2P"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
+// PWA Service Worker Registration
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(err => console.log('SW gagal:', err));
+}
+
+const GAMES = [
+  { id:'mlbb', name:'Mobile Legends: Bang Bang', cat:'MOBA', emoji:'⚔️', gradient:'linear-gradient(135deg,#1e3a8a,#3b82f6)', badge:'hot', fields:[{key:'uid',label:'User ID',ph:'Contoh: 12345678'},{key:'zone',label:'Zone ID',ph:'Contoh: 1234'}], denoms:[{label:'5 Diamond', price:1500},{label:'12 Diamond', price:3500},{label:'19 Diamond', price:5500},{label:'36 Diamond', price:10000},{label:'74 Diamond', price:20000},{label:'172 Diamond', price:45000, off:'HEMAT'},{label:'355 Diamond', price:90000, off:'HEMAT'},{label:'720 Diamond', price:180000},{label:'Weekly Diamond Pass', price:28000}]},
+  { id:'ff', name:'Free Fire', cat:'Battle Royale', emoji:'🔥', gradient:'linear-gradient(135deg,#7c2d12,#f97316)', badge:'hot', fields:[{key:'uid',label:'Player ID',ph:'Contoh: 987654321'}], denoms:[{label:'5 Diamond', price:1000},{label:'12 Diamond', price:2000},{label:'50 Diamond', price:7000},{label:'70 Diamond', price:10000},{label:'140 Diamond', price:19000},{label:'355 Diamond', price:47000, off:'HEMAT'},{label:'720 Diamond', price:93000},{label:'Membership Mingguan', price:28000}]},
+  { id:'pubgm', name:'PUBG Mobile', cat:'Battle Royale', emoji:'🎯', gradient:'linear-gradient(135deg,#78350f,#f59e0b)', fields:[{key:'uid',label:'Character ID',ph:'Contoh: 5123456789'}], denoms:[{label:'60 UC', price:15000},{label:'325 UC', price:74000},{label:'660 UC', price:148000, off:'HEMAT'},{label:'1800 UC', price:395000},{label:'3850 UC', price:790000}]},
+  { id:'gi', name:'Genshin Impact', cat:'RPG', emoji:'🌏', gradient:'linear-gradient(135deg,#0e7490,#22d3ee)', badge:'new', fields:[{key:'uid',label:'UID',ph:'Contoh: 812345678'},{key:'server',label:'Server',ph:'Asia / America / Europe'}], denoms:[{label:'60 Genesis Crystal', price:16000},{label:'300 + 30 Crystal', price:79000},{label:'980 + 110 Crystal', price:249000, off:'HEMAT'},{label:'1980 + 260 Crystal', price:479000},{label:'Blessing of Welkin Moon', price:79000}]},
+  { id:'valorant', name:'Valorant', cat:'FPS', emoji:'🎯', gradient:'linear-gradient(135deg,#7f1d1d,#ef4444)', fields:[{key:'uid',label:'Riot ID',ph:'Contoh: Player#TAG'}], denoms:[{label:'125 VP', price:15000},{label:'420 VP', price:49000},{label:'700 VP', price:79000},{label:'1375 VP', price:149000, off:'HEMAT'},{label:'2400 VP', price:259000}]},
+  { id:'hok', name:'Honor of Kings', cat:'MOBA', emoji:'👑', gradient:'linear-gradient(135deg,#4c1d95,#8b5cf6)', badge:'new', fields:[{key:'uid',label:'Player ID',ph:'Contoh: 401234567'}], denoms:[{label:'16 Token', price:5000},{label:'80 Token', price:24000},{label:'240 Token', price:70000},{label:'800 Token', price:230000, off:'HEMAT'}]},
+  { id:'codm', name:'Call of Duty Mobile', cat:'FPS', emoji:'🪖', gradient:'linear-gradient(135deg,#1f2937,#6b7280)', fields:[{key:'uid',label:'Open ID',ph:'Contoh: 6812345678'}], denoms:[{label:'80 CP', price:15000},{label:'420 CP', price:74000},{label:'880 CP', price:148000},{label:'2400 CP', price:395000, off:'HEMAT'}]},
+  { id:'hsr', name:'Honkai: Star Rail', cat:'RPG', emoji:'🚄', gradient:'linear-gradient(135deg,#1e1b4b,#6366f1)', badge:'new', fields:[{key:'uid',label:'UID',ph:'Contoh: 612345678'},{key:'server',label:'Server',ph:'Asia / America / Europe'}], denoms:[{label:'60 Oneiric Shard', price:16000},{label:'330 Oneiric Shard', price:79000},{label:'1090 Oneiric Shard', price:249000, off:'HEMAT'},{label:'Express Supply Pass', price:79000}]},
+  { id:'roblox', name:'Roblox', cat:'Sandbox', emoji:'🧱', gradient:'linear-gradient(135deg,#7f1d1d,#dc2626)', fields:[{key:'uid',label:'Username',ph:'Contoh: GamerPro123'}], denoms:[{label:'80 Robux', price:15000},{label:'400 Robux', price:69000},{label:'800 Robux', price:135000},{label:'1700 Robux', price:275000, off:'HEMAT'}]},
+  { id:'coc', name:'Clash of Clans', cat:'Strategi', emoji:'🏰', gradient:'linear-gradient(135deg,#78350f,#ca8a04)', fields:[{key:'uid',label:'Player Tag',ph:'Contoh: #8ABC123XY'}], denoms:[{label:'80 Gems', price:15000},{label:'500 Gems', price:74000},{label:'1200 Gems', price:148000},{label:'2500 Gems', price:295000, off:'HEMAT'}]},
+  { id:'wr', name:'Wild Rift', cat:'MOBA', emoji:'🗡️', gradient:'linear-gradient(135deg,#134e4a,#14b8a6)', fields:[{key:'uid',label:'Riot ID',ph:'Contoh: Player#TAG'}], denoms:[{label:'125 Wild Core', price:15000},{label:'425 Wild Core', price:49000},{label:'1000 Wild Core', price:110000, off:'HEMAT'},{label:'2000 Wild Core', price:215000}]},
+  { id:'efootball', name:'eFootball 2025', cat:'Olahraga', emoji:'⚽', gradient:'linear-gradient(135deg,#064e3b,#22c55e)', fields:[{key:'uid',label:'User ID',ph:'Contoh: 1234567890'}], denoms:[{label:'100 Coins', price:15000},{label:'500 Coins', price:72000},{label:'1000 Coins', price:140000},{label:'2500 Coins', price:340000, off:'HEMAT'}]},
+  { id:'stumble', name:'Stumble Guys', cat:'Party', emoji:'🤸', gradient:'linear-gradient(135deg,#831843,#ec4899)', fields:[{key:'uid',label:'Player ID',ph:'Contoh: 9876543'}], denoms:[{label:'100 Gems', price:12000},{label:'500 Gems', price:55000},{label:'1200 Gems', price:125000, off:'HEMAT'},{label:'Stumble Pass', price:49000}]},
+  { id:'steam', name:'Steam Wallet', cat:'Voucher', emoji:'🎮', gradient:'linear-gradient(135deg,#0c1a2b,#0ea5e9)', fields:[{key:'uid',label:'Email / Akun Steam',ph:'Contoh: email@kamu.com'}], denoms:[{label:'Steam Wallet Rp 12.000', price:13000},{label:'Steam Wallet Rp 45.000', price:47000},{label:'Steam Wallet Rp 60.000', price:62000},{label:'Steam Wallet Rp 90.000', price:93000},{label:'Steam Wallet Rp 120.000', price:124000, off:'HEMAT'},{label:'Steam Wallet Rp 250.000', price:257000}]},
+  { id:'gplay', name:'Google Play Gift Card', cat:'Voucher', emoji:'🛍️', gradient:'linear-gradient(135deg,#065f46,#34d399)', fields:[{key:'uid',label:'Email Penerima',ph:'Contoh: email@kamu.com'}], denoms:[{label:'Google Play Rp 20.000', price:21500},{label:'Google Play Rp 50.000', price:52000},{label:'Google Play Rp 100.000', price:102000, off:'HEMAT'},{label:'Google Play Rp 150.000', price:153000}]},
+  { id:'pb', name:'Point Blank', cat:'FPS', emoji:'💥', gradient:'linear-gradient(135deg,#1e293b,#475569)', fields:[{key:'uid',label:'ID PB', ph:'Contoh: gamer123'}], denoms:[{label:'1.200 Cash', price:12000},{label:'6.000 Cash', price:58000},{label:'12.000 Cash', price:114000},{label:'36.000 Cash', price:335000, off:'HEMAT'}]},
+  { id:'aov', name:'Arena of Valor', cat:'MOBA', emoji:'🛡️', gradient:'linear-gradient(135deg,#4a044e,#c026d3)', fields:[{key:'uid',label:'Player ID',ph:'Contoh: 123456789'}], denoms:[{label:'40 Voucher', price:10000},{label:'200 Voucher', price:48000},{label:'500 Voucher', price:118000, off:'HEMAT'},{label:'1000 Voucher', price:230000}]},
+  { id:'minecraft', name:'Minecraft', cat:'Sandbox', emoji:'⛏️', gradient:'linear-gradient(135deg,#14532d,#4ade80)', fields:[{key:'uid',label:'Email Akun',ph:'Contoh: email@kamu.com'}], denoms:[{label:'Minecraft Java Edition', price:299000},{label:'Minecraft Bedrock Edition', price:99000, off:'HEMAT'},{label:'Minecoin 300', price:45000},{label:'Minecoin 1020', price:130000}]},
+  { id:'ffmax', name:'Free Fire MAX', cat:'Battle Royale', emoji:'🎆', gradient:'linear-gradient(135deg,#7c2d12,#fb923c)', fields:[{key:'uid',label:'Player ID',ph:'Contoh: 987654321'}], denoms:[{label:'50 Diamond', price:7200},{label:'70 Diamond', price:10200},{label:'140 Diamond', price:19500},{label:'355 Diamond', price:48000, off:'HEMAT'},{label:'720 Diamond', price:95000}]},
+  { id:'amongus', name:'Among Us', cat:'Party', emoji:'👽', gradient:'linear-gradient(135deg,#1e3a8a,#60a5fa)', fields:[{key:'uid',label:'Email / ID',ph:'Contoh: email@kamu.com'}], denoms:[{label:'Among Us (PC)', price:65000},{label:'Among Us (Mobile)', price:25000},{label:'Stars 30', price:35000, off:'HEMAT'}]}
+];
+
+const PAYMENTS = [{id:'qris',icon:'📱',name:'QRIS',rec:true},{id:'dana',icon:'💙',name:'DANA'},{id:'ovo',icon:'💜',name:'OVO'},{id:'gopay',icon:'💚',name:'GoPay'},{id:'shopeepay',icon:'🧡',name:'ShopeePay'},{id:'bca',icon:'🏦',name:'Bank BCA'},{id:'bri',icon:'🏦',name:'Bank BRI'},{id:'pulsa',icon:'📶',name:'Pulsa'}];
+
+const ADMIN_FEE = 1500;
+const CATEGORIES = ['Semua', ...new Set(GAMES.map(g => g.cat))];
+const DEFAULT_QRIS = 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240"><rect width="240" height="240" fill="#f3f4f6"/><g fill="#6b7280" font-family="sans-serif" text-anchor="middle"><text x="120" y="105" font-size="15" font-weight="700">QRIS Belum Diatur</text><text x="120" y="132" font-size="12">Upload lewat</text><text x="120" y="150" font-size="12" font-weight="700">Admin Panel → Pengaturan</text></g></svg>`);
+
+let state = {
+  activeCat: 'Semua', search: '',
+  game: null, denom: null, pay: null,
+  voucherCode: null, voucherDiscount: 0,
+  adminAuthed: false, adminTab: 'dashboard', adminFilter: 'all', adminSearch: '',
+  vouchers: {}, prices: {}, settings: {}, orders: [], reviews: [], stocks: {},
+  unsubscribeOrders: null, unsubscribeReviews: null,
+  user: null
+};
+
+const fmt = n => 'Rp ' + n.toLocaleString('id-ID');
+const statusLabels = { pending:'Menunggu Bayar', paid:'Menunggu Verifikasi', success:'Berhasil', failed:'Gagal' };
+
+/* =====================================================
+   DATA LOADERS
+   ===================================================== */
+async function loadSettings(){
+  try { const snap = await getDoc(doc(db, 'settings', 'site')); state.settings = snap.exists() ? snap.data() : {}; } catch(e){ state.settings = {}; }
+}
+async function loadVouchers(){
+  try {
+    const snap = await getDocs(collection(db, 'vouchers'));
+    state.vouchers = {};
+    snap.forEach(d => { state.vouchers[d.id] = d.data(); });
+    if (!Object.keys(state.vouchers).length){
+      const defaults = {'TOPUPNEW10':{type:'percent',value:10,maxDiscount:50000,minTransaction:10000,newUserOnly:true,desc:'Diskon 10% max Rp 50.000'},'HEMAT5':{type:'percent',value:5,maxDiscount:25000,minTransaction:20000,desc:'Diskon 5% max Rp 25.000'}};
+      for (const [code, v] of Object.entries(defaults)){ await setDoc(doc(db, 'vouchers', code), v); state.vouchers[code] = v; }
+    }
+  } catch(e){}
+}
+async function loadPricesAndStock(){
+  try {
+    const snap = await getDocs(collection(db, 'prices'));
+    state.prices = {}; state.stocks = {};
+    snap.forEach(d => {
+      const data = d.data();
+      state.prices[d.id] = data;
+      if (data.stock) state.stocks[d.id] = data.stock;
+    });
+    GAMES.forEach(g => {
+      if (state.prices[g.id]) g.denoms.forEach((d,i) => { if (state.prices[g.id][i] !== undefined) d.price = state.prices[g.id][i]; });
+    });
+  } catch(e){}
+}
+
+function startOrdersListener(){
+  if (state.unsubscribeOrders) state.unsubscribeOrders();
+  const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'), limit(50));
+  state.unsubscribeOrders = onSnapshot(q, snap => {
+    state.orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderRiwayat();
+    if (state.adminAuthed && state.adminTab === 'orders') renderAdmin();
+  });
+}
+
+function startReviewsListener(){
+  if (state.unsubscribeReviews) state.unsubscribeReviews();
+  const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'), limit(10));
+  state.unsubscribeReviews = onSnapshot(q, snap => {
+    state.reviews = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderReviews();
+  });
+}
+
+/* =====================================================
+   AUTH & USER STATE
+   ===================================================== */
+onAuthStateChanged(auth, async (user) => {
+  state.user = user;
+  const btnLogin = document.getElementById('btnLogin');
+  const userProfile = document.getElementById('userProfile');
+  
+  if (user) {
+    btnLogin.style.display = 'none';
+    userProfile.style.display = 'flex';
+    document.getElementById('userName').textContent = user.displayName || user.email.split('@')[0];
+    document.getElementById('userAvatar').src = user.photoURL || `https://ui-avatars.com/api/?name=${user.email}&background=7c5cff&color=fff`;
+    
+    try {
+      const adminSnap = await getDoc(doc(db, 'admins', user.uid));
+      state.adminAuthed = adminSnap.exists();
+    } catch(e){ state.adminAuthed = false; }
+    if (state.adminAuthed) startOrdersListener();
+  } else {
+    btnLogin.style.display = 'block';
+    userProfile.style.display = 'none';
+    state.adminAuthed = false;
+  }
+  renderRiwayat();
+});
+
+window.openLogin = function(){
+  document.getElementById('loginModal').innerHTML = `
+    <div class="modal-head"><div class="ic">👤</div><div><h3>Masuk / Daftar</h3><small>Simpan riwayat transaksi kamu</small></div><button class="close" onclick="closeLogin()">✕</button></div>
+    <div class="modal-body">
+      <div class="login-form">
+        <button class="google-btn" onclick="loginGoogle()">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Masuk dengan Google
+        </button>
+        <div style="text-align:center;margin:16px 0;color:var(--muted);font-size:12px">— atau —</div>
+        <div class="field"><label>Email</label><input type="email" id="logEmail" placeholder="email@kamu.com"></div>
+        <div class="field" style="margin-top:8px"><label>Password</label><input type="password" id="logPwd" placeholder="Min. 6 karakter"></div>
+        <button class="admin-btn" onclick="loginEmail()">Masuk</button>
+        <button class="admin-btn ghost" onclick="registerEmail()" style="margin-top:8px">Buat Akun Baru</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('loginOverlay').classList.add('open');
+};
+window.closeLogin = function(){ document.getElementById('loginOverlay').classList.remove('open'); };
+
+window.loginGoogle = async function(){
+  try { await signInWithPopup(auth, googleProvider); toast('Login berhasil!'); closeLogin(); } catch(e){ toast('Gagal: ' + e.message); }
+};
+window.loginEmail = async function(){
+  const email = document.getElementById('logEmail').value;
+  const pwd = document.getElementById('logPwd').value;
+  try { await signInWithEmailAndPassword(auth, email, pwd); toast('Login berhasil!'); closeLogin(); } catch(e){ toast('Gagal: ' + e.message); }
+};
+window.registerEmail = async function(){
+  const email = document.getElementById('logEmail').value;
+  const pwd = document.getElementById('logPwd').value;
+  if(pwd.length < 6){ toast('Password min 6 karakter'); return; }
+  try { await createUserWithEmailAndPassword(auth, email, pwd); toast('Akun dibuat!'); closeLogin(); } catch(e){ toast('Gagal: ' + e.message); }
+};
+
+window.openProfile = function(){
+  if(!state.user) return;
+  if(confirm('Apakah Anda ingin logout?')) signOut(auth);
+};
+
+/* =====================================================
+   RENDER FUNCTIONS
+   ===================================================== */
+function renderChips(){
+  document.getElementById('chips').innerHTML = CATEGORIES.map(c => `<button class="chip ${c === state.activeCat ? 'active' : ''}" onclick="setCat('${c}')">${c}</button>`).join('');
+}
+window.setCat = function(c){ state.activeCat = c; renderChips(); renderGrid(); };
+
+function renderGrid(){
+  const q = state.search.toLowerCase().trim();
+  const list = GAMES.filter(g => {
+    const okCat = state.activeCat === 'Semua' || g.cat === state.activeCat;
+    const okQ = !q || g.name.toLowerCase().includes(q) || g.cat.toLowerCase().includes(q);
+    return okCat && okQ;
+  });
+  const grid = document.getElementById('gameGrid');
+  const count = document.getElementById('resultCount');
+  if (!list.length){ grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)"><p>Game tidak ditemukan.</p></div>`; count.textContent = 'Tidak ada hasil'; return; }
+  count.textContent = `Menampilkan ${list.length} produk`;
+  grid.innerHTML = list.map(g => {
+    const min = Math.min(...g.denoms.map(d => d.price));
+    const badge = g.badge === 'hot' ? '<span class="badge hot">🔥 Terlaris</span>' : g.badge === 'new' ? '<span class="badge new">✨ Baru</span>' : '';
+    return `<div class="game-card" onclick="openGame('${g.id}')"><div class="cover" style="background:${g.gradient}">${badge}<span class="emoji">${g.emoji}</span></div><div class="game-info"><h4>${g.name}</h4><span class="cat">${g.cat}</span><span class="price">Mulai ${fmt(min)}</span></div></div>`;
+  }).join('');
+}
+
+function renderRiwayat(){
+  const el = document.getElementById('riwayatList');
+  const sub = document.getElementById('riwayatSubtitle');
+  if (!el) return;
+  
+  let orders = state.orders;
+  // FITUR 2: Jika login, filter hanya order milik user tersebut
+  if (state.user) {
+    sub.textContent = "Transaksi yang tersimpan di akun kamu";
+    orders = orders.filter(o => o.userId === state.user.uid);
+  } else {
+    sub.textContent = "Transaksi kamu tersimpan otomatis di cloud (Login untuk menyimpan permanen)";
+  }
+
+  if (!orders.length){ el.innerHTML = `<div class="riwayat-empty"><div class="ic">📭</div><p>Belum ada transaksi.</p></div>`; return; }
+  el.innerHTML = orders.map(o => `
+    <div class="riwayat-item">
+      <div class="info"><h4>${o.gameEmoji || '🎮'} ${o.gameName} — ${o.denomLabel}</h4><small>${o.invoice} · ${o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString('id-ID') : '-'}</small></div>
+      <div class="right"><b>${fmt(o.total)}</b><span class="status ${o.status}">${statusLabels[o.status] || o.status}</span></div>
+    </div>`).join('');
+}
+
+// FITUR 4: RENDER ULASAN
+function renderReviews(){
+  const el = document.getElementById('reviewList');
+  if (!el) return;
+  if (!state.reviews.length){ el.innerHTML = `<div class="riwayat-empty"><p>Belum ada ulasan. Jadilah yang pertama!</p></div>`; return; }
+  el.innerHTML = state.reviews.map(r => `
+    <div class="review-item">
+      <div class="review-head">
+        <b>${r.name}</b>
+        <span class="review-stars">${'⭐'.repeat(r.rating)}</span>
+      </div>
+      <p style="font-size:13px;color:#b9c4dd">"${r.text}"</p>
+      <small style="color:var(--muted);font-size:11px;margin-top:6px;display:block">${r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString('id-ID') : '-'}</small>
+    </div>
+  `).join('');
+}
+
+window.openReviewForm = function(){
+  if(!state.user){ toast('Silakan login dulu untuk memberi ulasan'); openLogin(); return; }
+  document.getElementById('reviewModal').innerHTML = `
+    <div class="modal-head"><div class="ic">⭐</div><div><h3>Tulis Ulasan</h3><small>Bagikan pengalaman kamu</small></div><button class="close" onclick="closeReviewForm()">✕</button></div>
+    <div class="modal-body">
+      <div class="fields">
+        <div class="field full"><label>Rating (1-5 Bintang)</label><select id="revRating"><option value="5">⭐⭐⭐⭐⭐ (Sangat Puas)</option><option value="4">⭐⭐⭐⭐ (Puas)</option><option value="3">⭐⭐⭐ (Biasa)</option><option value="2">⭐⭐ (Kurang)</option><option value="1">⭐ (Kecewa)</option></select></div>
+        <div class="field full"><label>Ulasan Kamu</label><textarea id="revText" rows="4" placeholder="Prosesnya cepat, harganya murah..."></textarea></div>
+      </div>
+      <button class="btn-buy" onclick="submitReview()" style="margin-top:16px">Kirim Ulasan</button>
+    </div>
+  `;
+  document.getElementById('reviewOverlay').classList.add('open');
+};
+window.closeReviewForm = function(){ document.getElementById('reviewOverlay').classList.remove('open'); };
+window.submitReview = async function(){
+  const rating = parseInt(document.getElementById('revRating').value);
+  const text = document.getElementById('revText').value.trim();
+  if(!text){ toast('Tulis ulasanmu dulu'); return; }
+  try {
+    await addDoc(collection(db, 'reviews'), {
+      name: state.user.displayName || state.user.email.split('@')[0],
+      rating: rating, text: text, userId: state.user.uid, createdAt: serverTimestamp()
+    });
+    toast('Terima kasih atas ulasannya!');
+    closeReviewForm();
+  } catch(e){ toast('Gagal: ' + e.message); }
+};
+
+/* =====================================================
+   MODAL TOP UP
+   ===================================================== */
+window.openGame = function(id){
+  const g = GAMES.find(x => x.id === id);
+  if (!g) return;
+  state.game = g; state.denom = null; state.pay = 'qris'; state.voucherCode = null; state.voucherDiscount = 0;
+  
+  // Cek Stok Game (Fitur 3)
+  const stockData = state.stocks[g.id] || {};
+
+  document.getElementById('modal').innerHTML = `
+    <div class="modal-head"><div class="ic">${g.emoji}</div><div><h3>${g.name}</h3><small>${g.cat} · Pilih nominal, isi data, dan bayar</small></div><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="step"><div class="step-label"><span class="num">1</span> Pilih Nominal</div>
+        <div class="denoms">${g.denoms.map((d,i) => {
+          const isHabis = stockData[i] === false;
+          return `<button class="denom ${isHabis ? 'habis' : ''}" id="dn-${i}" onclick="pickDenom(${i})">${isHabis ? `<span class="off">HABIS</span>` : (d.off ? `<span class="off">${d.off}</span>` : '')}<b>${d.label}</b><span>${fmt(d.price)}</span></button>`;
+        }).join('')}</div></div>
+      <div class="step"><div class="step-label"><span class="num">2</span> Data Akun</div>
+        <div class="fields">
+          ${g.fields.map(f => `<div class="field ${g.fields.length === 1 ? 'full' : ''}"><label>${f.label}</label><input type="text" id="fld-${f.key}" placeholder="${f.ph}" autocomplete="off"></div>`).join('')}
+        </div></div>
+      <div class="step"><div class="step-label"><span class="num">3</span> Metode Pembayaran</div>
+        <div class="pays">${PAYMENTS.map(p => `<button class="pay ${p.id === 'qris' ? 'sel' : ''}" id="pay-${p.id}" onclick="pickPay('${p.id}')">${p.rec ? '<span class="rec">Rekomendasi</span>' : ''}<span class="pi">${p.icon}</span><small>${p.name}</small></button>`).join('')}</div></div>
+      <div class="voucher-wrap"><div class="step-label"><span class="num">4</span> Kode Voucher <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);margin-left:4px">(opsional)</span></div>
+        <div class="voucher-row"><input type="text" id="voucherInput" placeholder="Masukkan kode voucher" autocomplete="off"><button id="voucherBtn" onclick="applyVoucher()">Pakai</button></div>
+        <div class="voucher-msg" id="voucherMsg"></div>
+        <div class="voucher-pills">${Object.keys(state.vouchers).slice(0,5).map(c => `<button class="voucher-pill" onclick="useVoucherCode('${c}')">${c}</button>`).join('')}</div></div>
+      <div class="summary" id="summary"></div>
+    </div>
+    <div class="modal-foot"><button class="btn-buy" id="buyBtn" disabled onclick="checkout()">Pilih nominal terlebih dahulu</button></div>`;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  updateSummary();
+};
+
+window.pickDenom = function(i){
+  const g = state.game;
+  const stockData = state.stocks[g.id] || {};
+  if (stockData[i] === false) { toast('Stok item ini sedang habis'); return; }
+  
+  state.denom = g.denoms[i];
+  document.querySelectorAll('.denom').forEach(el => el.classList.remove('sel'));
+  document.getElementById('dn-' + i).classList.add('sel');
+  const msgEl = document.getElementById('voucherMsg'), btnEl = document.getElementById('voucherBtn'), inputEl = document.getElementById('voucherInput');
+  if (state.voucherCode){
+    const r = validateVoucher(state.voucherCode, state.denom.price + ADMIN_FEE);
+    if (r.ok){ state.voucherDiscount = r.discount; if (msgEl){ msgEl.className = 'voucher-msg ok'; msgEl.textContent = `✓ ${r.voucher.desc} — hemat ${fmt(r.discount)}`; } }
+    else { state.voucherCode = null; state.voucherDiscount = 0; if (msgEl){ msgEl.className = 'voucher-msg err'; msgEl.textContent = 'Voucher tidak berlaku'; } if (btnEl) btnEl.textContent = 'Pakai'; if (inputEl) inputEl.value = ''; }
+  }
+  updateSummary();
+};
+
+window.pickPay = function(id){
+  state.pay = id;
+  document.querySelectorAll('.pay').forEach(el => el.classList.remove('sel'));
+  document.getElementById('pay-' + id).classList.add('sel');
+  updateSummary();
+};
+
+window.applyVoucher = function(){
+  const input = document.getElementById('voucherInput'), msg = document.getElementById('voucherMsg'), btn = document.getElementById('voucherBtn');
+  if (state.voucherCode){ state.voucherCode = null; state.voucherDiscount = 0; input.value = ''; msg.className = 'voucher-msg'; msg.textContent = ''; btn.textContent = 'Pakai'; updateSummary(); return; }
+  if (!state.denom){ msg.className = 'voucher-msg err'; msg.textContent = 'Pilih nominal terlebih dahulu'; return; }
+  const r = validateVoucher(input.value, state.denom.price + ADMIN_FEE);
+  if (!r.ok){ msg.className = 'voucher-msg err'; msg.textContent = '✕ ' + r.msg; return; }
+  state.voucherCode = input.value.trim().toUpperCase(); state.voucherDiscount = r.discount;
+  msg.className = 'voucher-msg ok'; msg.textContent = `✓ ${r.voucher.desc} — hemat ${fmt(r.discount)}`;
+  btn.textContent = 'Hapus'; updateSummary();
+};
+
+window.useVoucherCode = function(code){
+  state.voucherCode = null; state.voucherDiscount = 0;
+  document.getElementById('voucherInput').value = code;
+  document.getElementById('voucherBtn').textContent = 'Pakai';
+  applyVoucher();
+};
+
+function validateVoucher(code, subtotal){
+  code = (code || '').trim().toUpperCase();
+  if (!code) return { ok:false, msg:'Masukkan kode voucher' };
+  const v = state.vouchers[code];
+  if (!v) return { ok:false, msg:'Kode voucher tidak valid' };
+  if (subtotal < v.minTransaction) return { ok:false, msg:`Minimal transaksi ${fmt(v.minTransaction)}` };
+  if (v.newUserOnly && state.orders.length > 0) return { ok:false, msg:'Voucher ini hanya untuk pengguna baru' };
+  let discount = Math.floor(subtotal * v.value / 100);
+  if (discount > v.maxDiscount) discount = v.maxDiscount;
+  return { ok:true, voucher:v, discount };
+}
+
+function updateSummary(){
+  const s = document.getElementById('summary'), btn = document.getElementById('buyBtn');
+  if (!s) return;
+  const d = state.denom;
+  const subtotal = d ? d.price + ADMIN_FEE : 0;
+  const discount = state.voucherDiscount || 0;
+  const total = subtotal - discount;
+  const payName = state.pay ? PAYMENTS.find(p => p.id === state.pay).name : '—';
+  s.innerHTML = `<div class="row"><span>Produk</span><b>${state.game.name}</b></div><div class="row"><span>Item</span><b>${d ? d.label : 'Belum dipilih'}</b></div><div class="row"><span>Harga Item</span><b>${d ? fmt(d.price) : '—'}</b></div><div class="row"><span>Biaya Admin</span><b>${d ? fmt(ADMIN_FEE) : '—'}</b></div>${discount > 0 ? `<div class="row" style="color:var(--ok)"><span>Diskon (${state.voucherCode})</span><b style="color:var(--ok)">- ${fmt(discount)}</b></div>` : ''}<div class="row"><span>Metode Bayar</span><b>${payName}</b></div><div class="row total"><span>Total</span><b>${d ? fmt(total) : '—'}</b></div>`;
+  if (d){ btn.disabled = false; btn.textContent = `Beli Sekarang — ${fmt(total)}`; }
+  else { btn.disabled = true; btn.textContent = 'Pilih nominal terlebih dahulu'; }
+}
+
+/* =====================================================
+   CHECKOUT (UPDATED WITH USER ID)
+   ===================================================== */
+window.checkout = async function(){
+  const g = state.game, d = state.denom;
+  if (!d){ toast('Pilih nominal terlebih dahulu'); return; }
+  if (!state.pay){ toast('Pilih metode pembayaran dulu ya'); return; }
+  for (const f of g.fields){
+    const input = document.getElementById('fld-' + f.key);
+    if (!input.value.trim()){ toast(`Isi ${f.label} terlebih dahulu`); input.focus(); input.style.borderColor = '#ef4444'; setTimeout(() => input.style.borderColor = '', 1600); return; }
+  }
+  
+  const subtotal = d.price + ADMIN_FEE;
+  const discount = state.voucherDiscount || 0;
+  const total = subtotal - discount;
+  const payName = PAYMENTS.find(p => p.id === state.pay).name;
+  const invoiceNo = 'TZ' + Date.now().toString().slice(-9);
+  const accountData = {};
+  g.fields.forEach(f => { accountData[f.label] = document.getElementById('fld-' + f.key).value.trim(); });
+
+  const order = {
+    invoice: invoiceNo, gameId: g.id, gameName: g.name, gameEmoji: g.emoji,
+    denomLabel: d.label, price: d.price, adminFee: ADMIN_FEE,
+    voucherCode: state.voucherCode || null, discount: discount, total: total,
+    payMethod: state.pay, payName: payName, accountData,
+    customerName: state.user ? (state.user.displayName || 'User') : 'Guest',
+    customerWA: state.user ? state.user.email : '',
+    userId: state.user ? state.user.uid : null, // FITUR 2: Simpan UID user
+    status: 'pending', createdAt: serverTimestamp()
+  };
+
+  const btn = document.getElementById('buyBtn');
+  btn.disabled = true; btn.textContent = 'Memproses...';
+
+  try {
+    await setDoc(doc(db, 'orders', invoiceNo), order);
+    toast('✅ Pesanan tersimpan');
+    startOrdersListener();
+    showPaymentPage({ ...order, createdAt: new Date() });
+  } catch(err){
+    toast('❌ Gagal simpan pesanan: ' + err.message);
+    btn.disabled = false; btn.textContent = `Beli Sekarang — ${fmt(total)}`;
+  }
+};
+
+function showPaymentPage(order){
+  const akunData = Object.entries(order.accountData).map(([k, v]) => `<div class="row"><span>${k}</span><b>${v}</b></div>`).join('');
+  const qrisImg = state.settings.qrisImage || DEFAULT_QRIS;
+
+  document.getElementById('modal').innerHTML = `
+    <div class="modal-head"><div class="ic">📱</div><div><h3>Pembayaran QRIS</h3><small>Scan QRIS di bawah untuk membayar</small></div><button class="close" onclick="closeModal()">✕</button></div>
+    <div class="modal-body">
+      <div class="qris-box"><div class="qris-info">Scan QRIS berikut dengan e-wallet / m-banking</div><img src="${qrisImg}" alt="QRIS"><div class="qris-amount">${fmt(order.total)}</div><div class="qris-info" style="font-size:11px">⚠️ Bayar sesuai nominal persis</div></div>
+      <div class="invoice"><div class="row"><span>No. Invoice</span><b class="mono">${order.invoice}</b></div><div class="row"><span>Status</span><b><span class="status pending">Menunggu Bayar</span></b></div><div class="row"><span>Game</span><b>${order.gameName}</b></div>${akunData}<div class="row"><span>Item</span><b>${order.denomLabel}</b></div>${order.discount > 0 ? `<div class="row"><span>Diskon</span><b style="color:var(--ok)">- ${fmt(order.discount)}</b></div>` : ''}<div class="row" style="border-top:1px dashed var(--line);margin-top:8px;padding-top:10px"><span style="color:var(--txt);font-weight:700">Total Bayar</span><b style="color:var(--accent-2);font-size:16px">${fmt(order.total)}</b></div></div>
+      <button class="btn-buy" onclick="markPaid('${order.invoice}')">✓ Saya Sudah Bayar</button>
+      <button class="btn btn-ghost" style="width:100%;margin-top:10px" onclick="closeModal()">Bayar Nanti</button>
+    </div>`;
+}
+
+window.markPaid = async function(inv){
+  try {
+    await updateDoc(doc(db, 'orders', inv), { status: 'paid', updatedAt: serverTimestamp() });
+    toast('Pesanan dikirim ke admin untuk verifikasi');
+    document.getElementById('modal').innerHTML = `
+      <div class="modal-head"><div class="ic">⏳</div><div><h3>Menunggu Verifikasi</h3><small>Invoice ${inv}</small></div><button class="close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body"><div class="success"><div class="check">⏳</div><h3>Pembayaran Diterima</h3><p>Admin akan verifikasi pembayaranmu. Cek status di menu <b>Cek Transaksi</b>.</p><button class="btn-buy" onclick="closeModal()">Selesai</button></div></div>`;
+  } catch(err){ toast('Gagal update: ' + err.message); }
+};
+
+/* =====================================================
+   CEK TRANSAKSI
+   ===================================================== */
+window.openCek = function(){ document.getElementById('cekOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; document.getElementById('cekInvoice').value = ''; document.getElementById('cekResult').innerHTML = ''; };
+window.closeCek = function(){ document.getElementById('cekOverlay').classList.remove('open'); document.body.style.overflow = ''; };
+window.doCek = async function(){
+  const inv = document.getElementById('cekInvoice').value.trim().toUpperCase();
+  const result = document.getElementById('cekResult');
+  if (!inv){ result.innerHTML = `<div class="voucher-msg err">Masukkan nomor invoice</div>`; return; }
+  try {
+    const snap = await getDoc(doc(db, 'orders', inv));
+    if (!snap.exists()){ result.innerHTML = `<div class="voucher-msg err">Invoice <b>${inv}</b> tidak ditemukan.</div>`; return; }
+    const o = snap.data();
+    const akunData = Object.entries(o.accountData || {}).map(([k, v]) => `<div class="row"><span>${k}</span><b>${v}</b></div>`).join('');
+    result.innerHTML = `<div class="invoice"><div class="row"><span>Invoice</span><b class="mono">${o.invoice}</b></div><div class="row"><span>Status</span><b><span class="status ${o.status}">${statusLabels[o.status]}</span></b></div><div class="row"><span>Game</span><b>${o.gameEmoji} ${o.gameName}</b></div>${akunData}<div class="row"><span>Item</span><b>${o.denomLabel}</b></div><div class="row"><span>Total</span><b style="color:var(--accent-2)">${fmt(o.total)}</b></div><div class="row"><span>Metode</span><b>${o.payName}</b></div><div class="row"><span>Tanggal</span><b>${o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString('id-ID') : '-'}</b></div></div>${o.status === 'pending' ? `<button class="btn-buy" style="margin-top:10px" onclick="reopenPayment('${o.invoice}')">Bayar Sekarang</button>` : ''}`;
+  } catch(err){ result.innerHTML = `<div class="voucher-msg err">Error: ${err.message}</div>`; }
+};
+window.reopenPayment = async function(inv){
+  const snap = await getDoc(doc(db, 'orders', inv));
+  if (!snap.exists()) return;
+  closeCek();
+  showPaymentPage({ id: snap.id, ...snap.data() });
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+/* =====================================================
+   ADMIN PANEL
+   ===================================================== */
+window.openAdmin = function(){
+  if (!state.adminAuthed){
+    document.getElementById('adminModal').innerHTML = `
+      <div class="modal-head"><div class="ic">🔐</div><div><h3>Admin Login</h3><small>Login dengan akun Firebase</small></div><button class="close" onclick="closeAdmin()">✕</button></div>
+      <div class="modal-body"><div class="login-form"><div class="ic">🛡️</div><h3>Area Terbatas</h3><p>Hanya admin yang boleh masuk</p>
+        <div class="field"><label>Email Admin</label><input type="email" id="adminEmail" placeholder="admin@topupzone.id" autocomplete="username"></div>
+        <div class="field"><label>Password</label><input type="password" id="adminPwd" placeholder="Password" autocomplete="current-password"></div>
+        <button class="admin-btn" onclick="tryAdminLogin()">Masuk</button>
+      </div></div>`;
+    document.getElementById('adminOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  } else {
+    state.adminTab = 'dashboard';
+    renderAdmin();
+    document.getElementById('adminOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    startOrdersListener();
+  }
+};
+
+window.tryAdminLogin = async function(){
+  const email = document.getElementById('adminEmail').value.trim();
+  const pwd = document.getElementById('adminPwd').value;
+  try {
+    await signInWithEmailAndPassword(auth, email, pwd);
+    toast('Login berhasil');
+    setTimeout(() => {
+      if (state.adminAuthed){ state.adminTab = 'dashboard'; renderAdmin(); startOrdersListener(); }
+      else { toast('Akun ini bukan admin.'); signOut(auth); }
+    }, 500);
+  } catch(err){ toast('Login gagal: ' + err.message); }
+};
+
+window.closeAdmin = function(){ document.getElementById('adminOverlay').classList.remove('open'); document.body.style.overflow = ''; };
+window.logoutAdmin = async function(){ await signOut(auth); state.adminAuthed = false; closeAdmin(); toast('Logout berhasil'); };
+window.setAdminTab = function(t){ state.adminTab = t; renderAdmin(); };
+
+function renderAdmin(){
+  if (!state.adminAuthed) return;
+  const tabs = [{id:'dashboard',label:'📊 Dashboard'},{id:'orders',label:'📋 Pesanan'},{id:'vouchers',label:'🎟️ Voucher'},{id:'prices',label:'💰 Harga & Stok'},{id:'settings',label:'⚙️ Pengaturan'}];
+  let content = '';
+  if (state.adminTab === 'dashboard') content = renderAdminDashboard();
+  else if (state.adminTab === 'orders') content = renderAdminOrders();
+  else if (state.adminTab === 'vouchers') content = renderAdminVouchers();
+  else if (state.adminTab === 'prices') content = renderAdminPrices();
+  else if (state.adminTab === 'settings') content = renderAdminSettings();
+  document.getElementById('adminModal').innerHTML = `
+    <div class="modal-head"><div class="ic">🛡️</div><div><h3>Admin Panel</h3><small>Kelola toko TopUpZone</small></div><button class="close" onclick="closeAdmin()">✕</button></div>
+    <div class="admin-tabs">${tabs.map(t => `<button class="admin-tab ${state.adminTab === t.id ? 'active' : ''}" onclick="setAdminTab('${t.id}')">${t.label}</button>`).join('')}<button class="admin-tab" style="margin-left:auto;color:#ef4444" onclick="logoutAdmin()">Keluar</button></div>
+    <div class="admin-body">${content}</div>`;
+}
+
+function renderAdminDashboard(){
+  const orders = state.orders || [];
+  const pending = orders.filter(o => o.status === 'pending').length;
+  const paid = orders.filter(o => o.status === 'paid').length;
+  const revenue = orders.filter(o => o.status === 'success').reduce((s, o) => s + (o.total || 0), 0);
+  return `
+    <div class="admin-stats">
+      <div class="admin-stat"><small>Total Pesanan</small><b>${orders.length}</b></div>
+      <div class="admin-stat warn"><small>Menunggu Bayar</small><b>${pending}</b></div>
+      <div class="admin-stat cyan"><small>Perlu Verifikasi</small><b>${paid}</b></div>
+      <div class="admin-stat green"><small>Pendapatan</small><b>${fmt(revenue)}</b></div>
+    </div>
+    ${paid > 0 ? `<div style="background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.4);border-radius:14px;padding:14px;margin-bottom:14px"><b style="color:#f59e0b">⚠️ Ada ${paid} pesanan menunggu verifikasi</b><button class="ao-btn approve" style="margin-left:10px" onclick="state.adminFilter='paid';setAdminTab('orders')">Verifikasi →</button></div>` : ''}
+    <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px"><h4 style="font-size:14px;margin-bottom:10px">Pesanan Terakhir (Real-time)</h4>
+      ${orders.slice(0,5).map(o => `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;gap:10px;flex-wrap:wrap"><div><b>${o.gameName}</b> — ${o.denomLabel}<br><small style="color:var(--muted);font-family:ui-monospace,monospace">${o.invoice}</small></div><div style="text-align:right"><b style="color:var(--accent-2)">${fmt(o.total)}</b><br><span class="status ${o.status}" style="font-size:10px">${statusLabels[o.status]}</span></div></div>`).join('') || '<p style="color:var(--muted);font-size:13px">Belum ada pesanan.</p>'}
+    </div>`;
+}
+
+function renderAdminOrders(){
+  let list = state.orders || [];
+  if (state.adminFilter !== 'all') list = list.filter(o => o.status === state.adminFilter);
+  if (state.adminSearch){ const q = state.adminSearch.toLowerCase(); list = list.filter(o => o.invoice.toLowerCase().includes(q) || o.gameName.toLowerCase().includes(q)); }
+  const filters = [{id:'all',label:'Semua'},{id:'pending',label:'Menunggu Bayar'},{id:'paid',label:'Perlu Verifikasi'},{id:'success',label:'Berhasil'},{id:'failed',label:'Gagal'}];
+  return `
+    <div class="admin-filter"><input type="text" placeholder="Cari invoice / game..." value="${state.adminSearch}" oninput="state.adminSearch=this.value;renderAdmin()"><select onchange="state.adminFilter=this.value;renderAdmin()">${filters.map(f => `<option value="${f.id}" ${state.adminFilter === f.id ? 'selected' : ''}>${f.label}</option>`).join('')}</select></div>
+    ${list.length === 0 ? '<div class="riwayat-empty"><div class="ic">📭</div><p>Tidak ada pesanan.</p></div>' : list.map(o => renderAdminOrderCard(o)).join('')}`;
+}
+
+function renderAdminOrderCard(o){
+  const akun = Object.entries(o.accountData || {}).map(([k,v]) => `${k}: <b>${v}</b>`).join(' · ');
+  return `<div class="admin-order"><div class="ao-head"><div><h4>${o.gameEmoji||'🎮'} ${o.gameName} — ${o.denomLabel}</h4><small>${o.invoice}</small></div><span class="status ${o.status}">${statusLabels[o.status]}</span></div>
+    <div class="ao-meta">${akun || '—'}<br>👤 ${o.customerName || 'Guest'}<br>💳 ${o.payName} · 💰 <b style="color:var(--accent-2)">${fmt(o.total)}</b><br>🕒 ${o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString('id-ID') : '-'}</div>
+    <div class="ao-actions">${o.status === 'pending' ? `<button class="ao-btn mark" onclick="adminMarkPaid('${o.invoice}')">💳 Tandai Bayar</button>` : ''}${o.status === 'paid' ? `<button class="ao-btn approve" onclick="adminApprove('${o.invoice}')">✅ Approve</button>` : ''}${(o.status === 'pending' || o.status === 'paid') ? `<button class="ao-btn reject" onclick="adminReject('${o.invoice}')">✕ Tolak</button>` : ''}<button class="ao-btn del" onclick="adminDelete('${o.invoice}')">🗑 Hapus</button></div></div>`;
+}
+
+window.adminMarkPaid = async function(inv){ await updateDoc(doc(db,'orders',inv), {status:'paid', updatedAt: serverTimestamp()}); toast('Status: Menunggu Verifikasi'); };
+window.adminApprove = async function(inv){ await updateDoc(doc(db,'orders',inv), {status:'success', updatedAt: serverTimestamp()}); toast('✅ Pesanan disetujui'); };
+window.adminReject = async function(inv){ if(!confirm('Tolak pesanan ini?')) return; await updateDoc(doc(db,'orders',inv), {status:'failed', updatedAt: serverTimestamp()}); toast('Pesanan ditolak'); };
+window.adminDelete = async function(inv){ if(!confirm('Hapus pesanan permanen?')) return; await deleteDoc(doc(db,'orders',inv)); toast('Pesanan dihapus'); };
+
+function renderAdminVouchers(){
+  const vouchers = state.vouchers || {};
+  return `
+    <div class="admin-form"><h4>+ Tambah / Edit Voucher</h4><div class="fields">
+      <div class="field"><label>Kode</label><input type="text" id="v-code" placeholder="PROMO50" style="text-transform:uppercase"></div>
+      <div class="field"><label>Diskon (%)</label><input type="number" id="v-value" placeholder="10" min="1" max="100"></div>
+      <div class="field"><label>Max Diskon (Rp)</label><input type="number" id="v-max" placeholder="50000"></div>
+      <div class="field"><label>Min Transaksi (Rp)</label><input type="number" id="v-min" placeholder="10000"></div>
+      <div class="field full"><label>Deskripsi</label><input type="text" id="v-desc" placeholder="Diskon 10% max Rp 50.000"></div>
+    </div><button class="admin-btn" onclick="saveVoucherForm()">💾 Simpan</button></div>
+    ${Object.entries(vouchers).map(([code, v]) => `<div class="admin-order"><div class="ao-head"><div><h4 style="font-family:ui-monospace,monospace;color:var(--accent-2)">${code}</h4><small>${v.desc}</small></div><b style="color:var(--ok)">${v.value}%</b></div><div class="ao-actions"><button class="ao-btn del" onclick="deleteVoucher('${code}')">🗑 Hapus</button></div></div>`).join('')}`;
+}
+
+window.saveVoucherForm = async function(){
+  const code = document.getElementById('v-code').value.trim().toUpperCase();
+  const value = parseInt(document.getElementById('v-value').value);
+  const max = parseInt(document.getElementById('v-max').value) || 50000;
+  const min = parseInt(document.getElementById('v-min').value) || 0;
+  const desc = document.getElementById('v-desc').value.trim() || `Diskon ${value}% max ${fmt(max)}`;
+  if (!code || !value || value < 1 || value > 100){ toast('Isi kode & diskon 1-100'); return; }
+  await setDoc(doc(db, 'vouchers', code), { type:'percent', value, maxDiscount:max, minTransaction:min, newUserOnly:false, desc });
+  state.vouchers[code] = { type:'percent', value, maxDiscount:max, minTransaction:min, newUserOnly:false, desc };
+  toast('Voucher disimpan'); renderAdmin();
+};
+window.deleteVoucher = async function(code){
+  if (!confirm(`Hapus voucher ${code}?`)) return;
+  await deleteDoc(doc(db, 'vouchers', code));
+  delete state.vouchers[code];
+  toast('Voucher dihapus'); renderAdmin();
+};
+
+/* FITUR 3: MANAJEMEN STOK DI ADMIN */
+function renderAdminPrices(){
+  return GAMES.map(g => {
+    const stockData = state.stocks[g.id] || {};
+    return `<div class="admin-form"><h4>${g.emoji} ${g.name}</h4>
+      ${g.denoms.map((d,i) => {
+        const isHabis = stockData[i] === false;
+        return `<div class="price-row">
+          <span class="pr-label">${d.label}</span>
+          <input type="number" id="price-${g.id}-${i}" value="${d.price}" min="0">
+          <button class="pr-save" onclick="savePrice('${g.id}', ${i})">💾</button>
+          <button class="ao-btn ${isHabis ? 'reject' : 'approve'}" onclick="toggleStock('${g.id}', ${i}, ${isHabis})" style="padding:6px 10px;font-size:11px">${isHabis ? 'Habis' : 'Ready'}</button>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+window.savePrice = async function(gameId, idx){
+  const val = parseInt(document.getElementById(`price-${gameId}-${idx}`).value);
+  if (isNaN(val) || val < 0){ toast('Harga tidak valid'); return; }
+  const g = GAMES.find(x => x.id === gameId);
+  g.denoms[idx].price = val;
+  const override = { ...(state.prices[gameId] || {}), [idx]: val };
+  await setDoc(doc(db, 'prices', gameId), override, { merge: true });
+  state.prices[gameId] = override;
+  renderGrid(); toast('Harga diperbarui'); renderAdmin();
+};
+
+window.toggleStock = async function(gameId, idx, currentHabis){
+  const newStock = currentHabis ? true : false; // jika habis, set true (ready). jika ready, set false (habis).
+  const stockOverride = { ...(state.stocks[gameId] || {}), [idx]: newStock };
+  await setDoc(doc(db, 'prices', gameId), { stock: stockOverride }, { merge: true });
+  if(!state.stocks[gameId]) state.stocks[gameId] = {};
+  state.stocks[gameId][idx] = newStock;
+  renderGrid(); toast(newStock ? 'Stok diaktifkan' : 'Stok ditandai habis'); renderAdmin();
+};
+
+function renderAdminSettings(){
+  const s = state.settings || {};
+  return `
+    <div class="admin-form"><h4>📱 QRIS</h4><div style="text-align:center;margin-bottom:12px"><img src="${s.qrisImage || DEFAULT_QRIS}" style="max-width:220px;border-radius:12px;border:2px solid var(--line);background:#fff;padding:8px"></div><div class="fields"><div class="field full"><label>Upload (max 800KB)</label><input type="file" accept="image/*" onchange="uploadQris(event)"></div></div><button class="admin-btn ghost" onclick="resetQris()">↺ Reset</button></div>
+    <div class="admin-form"><h4>📲 WhatsApp Admin</h4><div class="fields"><div class="field"><label>Nomor WA</label><input type="tel" id="wa-number" placeholder="08xxxxxxxxxx" value="${s.adminWhatsApp || ''}"></div></div><button class="admin-btn" onclick="saveWASettings()">💾 Simpan</button></div>`;
+}
+
+window.uploadQris = function(e){
+  const file = e.target.files[0]; if (!file) return;
+  if (file.size > 800 * 1024){ toast('Max 800KB'); return; }
+  const reader = new FileReader();
+  reader.onload = async () => {
+    await setDoc(doc(db, 'settings', 'site'), { qrisImage: reader.result }, { merge: true });
+    state.settings.qrisImage = reader.result;
+    toast('QRIS diupload'); renderAdmin();
+  };
+  reader.readAsDataURL(file);
+};
+window.resetQris = async function(){
+  if (!confirm('Reset QRIS?')) return;
+  await updateDoc(doc(db, 'settings', 'site'), { qrisImage: deleteField() }).catch(async () => {
+    await setDoc(doc(db, 'settings', 'site'), { qrisImage: '' }, { merge: true });
+  });
+  state.settings.qrisImage = '';
+  toast('QRIS direset'); renderAdmin();
+};
+window.saveWASettings = async function(){
+  const wa = document.getElementById('wa-number').value.trim();
+  await setDoc(doc(db, 'settings', 'site'), { adminWhatsApp: wa }, { merge: true });
+  state.settings.adminWhatsApp = wa;
+  toast('Disimpan'); renderAdmin();
+};
+
+/* =====================================================
+   UTIL
+   ===================================================== */
+window.contactAdmin = function(){
+  const wa = state.settings.adminWhatsApp;
+  if (!wa){ toast('Admin belum setting WA'); return; }
+  window.open(`https://wa.me/${wa.replace(/^0/,'62')}?text=${encodeURIComponent('Halo, saya mau tanya soal top up.')}`, '_blank');
+};
+
+window.closeModal = function(){ document.getElementById('overlay').classList.remove('open'); document.body.style.overflow = ''; state.game = null; state.denom = null; state.pay = null; state.voucherCode = null; state.voucherDiscount = 0; };
+let toastTimer;
+window.toast = function(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2800); };
+window.copyCode = function(btn){ const code = btn.previousElementSibling.textContent; navigator.clipboard?.writeText(code).then(() => { btn.textContent = 'Tersalin ✓'; setTimeout(() => btn.textContent = 'Salin', 1800); toast('Kode ' + code + ' disalin'); }).catch(() => toast('Kode: ' + code)); };
+
+document.getElementById('searchInput').addEventListener('input', e => { state.search = e.target.value; renderGrid(); });
+document.getElementById('overlay').addEventListener('click', e => { if (e.target.id === 'overlay') closeModal(); });
+document.getElementById('cekOverlay').addEventListener('click', e => { if (e.target.id === 'cekOverlay') closeCek(); });
+document.getElementById('adminOverlay').addEventListener('click', e => { if (e.target.id === 'adminOverlay') closeAdmin(); });
+document.getElementById('loginOverlay').addEventListener('click', e => { if (e.target.id === 'loginOverlay') closeLogin(); });
+document.getElementById('reviewOverlay').addEventListener('click', e => { if (e.target.id === 'reviewOverlay') closeReviewForm(); });
+
+(async function init(){
+  await loadSettings();
+  await loadVouchers();
+  await loadPricesAndStock();
+  startOrdersListener();
+  startReviewsListener();
+  renderChips();
+  renderGrid();
+  renderRiwayat();
+})();
+</script>
+</body>
+</html>
