@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1220">
+<title>REGI Location & WiFi Scanner</title>
+<style>
+:root{--bg:#08111f;--panel:#111d30;--panel2:#17253b;--line:#263750;--text:#edf5ff;--muted:#9eb0c8;--cyan:#43d5e8;--green:#42d392;--amber:#ffc56b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#142c49 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1050px;margin:auto;padding:24px 16px 50px}.top{display:flex;align-items:center;gap:13px;margin-bottom:24px}.logo{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,#1a9cb5,#2855a6);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 30px #0daac044}.brand{font-weight:800;letter-spacing:.08em;font-size:14px}.sub{font-size:12px;color:var(--muted)}.hero{margin:10px 0 22px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:.18em;font-weight:800}.hero h1{font-size:clamp(27px,5vw,42px);line-height:1.1;margin:8px 0}.hero p{color:var(--muted);max-width:650px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:linear-gradient(160deg,#142238,#101a2b);border:1px solid var(--line);border-radius:19px;padding:19px;box-shadow:0 14px 35px #0002}.card.wide{grid-column:1/-1}.cardhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.card h2{font-size:17px;margin:0}.pill{font-size:11px;padding:5px 9px;border-radius:99px;background:#20334b;color:#b9cce3}.status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}.dot{width:8px;height:8px;border-radius:50%;background:#74849a}.dot.good{background:var(--green);box-shadow:0 0 12px #42d39288}.big{font-size:25px;font-weight:750;letter-spacing:-.03em;margin:5px 0}.muted{color:var(--muted);font-size:13px}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}button,.linkbtn{border:0;border-radius:11px;padding:11px 15px;font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}.primary{background:var(--cyan);color:#06131d}.secondary{background:#243750;color:#e8f2ff;border:1px solid #344b68}.secondary:disabled{opacity:.45;cursor:not-allowed}.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:15px}.stat{background:#0c1728;border:1px solid #22344d;border-radius:12px;padding:11px}.stat small{display:block;color:var(--muted);font-size:11px}.stat strong{display:block;margin-top:4px;font-size:14px;overflow-wrap:anywhere}.map{height:310px;background:#0b1727;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;place-items:center;color:var(--muted);text-align:center;padding:15px}.map iframe{width:100%;height:100%;border:0}.notice{margin-top:13px;padding:12px 13px;border-radius:12px;background:#2b2418;border:1px solid #58462a;color:#f4d8a5;font-size:12px}.info{margin-top:12px;padding:12px;border-radius:12px;background:#0c1728;border:1px solid #22344d;color:var(--muted);font-size:13px}.foot{text-align:center;color:#72849d;font-size:11px;margin-top:24px}.error{color:#ffb5a9}.hidden{display:none}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.card.wide{grid-column:auto}.wrap{padding:18px 13px 35px}.map{height:270px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">⌖</div>
+    <div><div class="brand">REGI SCANNER</div><div class="sub">Location & WiFi Scanner</div></div>
+  </header>
+  <section class="hero">
+    <div class="eyebrow">REAL DEVICE INFORMATION</div>
+    <h1>Kenali lokasi &<br>koneksi perangkat.</h1>
+    <p>Periksa posisi GPS perangkat ini dan informasi koneksi internet yang dapat diakses oleh browser. Semua akses lokasi memerlukan izin pengguna.</p>
+  </section>
+
+  <main class="grid">
+    <section class="card">
+      <div class="cardhead"><h2>📍 Lokasi GPS</h2><span class="pill" id="gpsPill">Belum aktif</span></div>
+      <div class="status"><span class="dot" id="gpsDot"></span><span id="gpsStatus">Menunggu izin lokasi</span></div>
+      <div class="big" id="coords">--.------, --.------</div>
+      <div class="muted" id="gpsHint">Tekan tombol untuk meminta lokasi dari perangkat.</div>
+      <div class="stats">
+        <div class="stat"><small>Akurasi</small><strong id="accuracy">—</strong></div>
+        <div class="stat"><small>Ketinggian</small><strong id="altitude">—</strong></div>
+        <div class="stat"><small>Kecepatan</small><strong id="speed">—</strong></div>
+        <div class="stat"><small>Pembaruan</small><strong id="updated">—</strong></div>
+      </div>
+      <div class="actions">
+        <button class="primary" id="locateBtn">◎ Ambil lokasi saya</button>
+        <button class="secondary" id="watchBtn">Mulai live GPS</button>
+        <button class="secondary" id="stopBtn" disabled>Hentikan</button>
+      </div>
+      <div class="actions">
+        <button class="secondary" id="copyBtn" disabled>Salin koordinat</button>
+        <a class="linkbtn secondary" id="mapsBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">Buka Google Maps ↗</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="cardhead"><h2>📶 Informasi jaringan</h2><span class="pill" id="netPill">Memeriksa</span></div>
+      <div class="status"><span class="dot" id="netDot"></span><span id="netStatus">Memeriksa koneksi perangkat</span></div>
+      <div class="stats">
+        <div class="stat"><small>Status internet</small><strong id="online">—</strong></div>
+        <div class="stat"><small>Jenis koneksi</small><strong id="connType">Tidak tersedia</strong></div>
+        <div class="stat"><small>Perkiraan kecepatan</small><strong id="downlink">—</strong></div>
+        <div class="stat"><small>Latensi perkiraan</small><strong id="rtt">—</strong></div>
+        <div class="stat"><small>IP publik</small><strong id="ip">Belum diperiksa</strong></div>
+        <div class="stat"><small>Mode hemat data</small><strong id="saveData">—</strong></div>
+      </div>
+      <div class="actions"><button class="primary" id="refreshNet">↻ Periksa jaringan</button></div>
+      <div class="notice"><b>Catatan Wi-Fi:</b> Browser website tidak diizinkan membaca nama Wi-Fi (SSID), password, atau memindai semua jaringan di sekitar. Bagian ini hanya menampilkan informasi koneksi yang memang dibuka oleh perangkat/browser.</div>
+    </section>
+
+    <section class="card wide">
+      <div class="cardhead"><h2>🗺️ Peta lokasi</h2><span class="pill" id="mapPill">Menunggu GPS</span></div>
+      <div class="map" id="map"><div><div style="font-size:30px">⌖</div><b>Lokasi belum tersedia</b><br><span class="muted">Aktifkan GPS untuk menampilkan titik lokasi di peta.</span></div></div>
+      <div class="info">Peta menggunakan OpenStreetMap. Titik hanya ditampilkan setelah perangkat memberikan koordinat GPS.</div>
+    </section>
+  </main>
+  <div class="foot">REGI LOCATION & WIFI SCANNER · Informasi hanya diakses dengan izin pengguna.</div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let latestPosition = null, watchId = null;
+function setGpsStatus(text, good=false, pill='GPS'){
+  $('gpsStatus').textContent=text; $('gpsDot').className='dot'+(good?' good':'');
+  $('gpsPill').textContent=pill;
+}
+function showPosition(pos){
+  latestPosition=pos;
+  const c=pos.coords, lat=c.latitude, lon=c.longitude;
+  $('coords').textContent=lat.toFixed(6)+', '+lon.toFixed(6);
+  $('accuracy').textContent='± '+Math.round(c.accuracy)+' meter';
+  $('altitude').textContent=c.altitude==null?'Tidak tersedia':Math.round(c.altitude)+' m';
+  $('speed').textContent=c.speed==null?'Tidak tersedia':(c.speed*3.6).toFixed(1)+' km/jam';
+  $('updated').textContent=new Date(pos.timestamp).toLocaleTimeString('id-ID');
+  $('gpsHint').textContent='Koordinat berasal dari layanan lokasi perangkat.';
+  $('copyBtn').disabled=false;
+  $('mapsBtn').href=`https://www.google.com/maps?q=${lat},${lon}`;
+  $('mapsBtn').setAttribute('aria-disabled','false');
+  $('mapPill').textContent='Koordinat ditemukan';
+  const d=.008, bbox=[lon-d,lat-d,lon+d,lat+d].join('%2C');
+  $('map').innerHTML=`<iframe title="Peta lokasi GPS" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lon}"></iframe>`;
+  setGpsStatus('Lokasi berhasil diperoleh',true,'Aktif');
+}
+function getLocation(){
+  if(!('geolocation' in navigator)){setGpsStatus('Browser tidak mendukung GPS');$('gpsHint').textContent='Coba browser lain atau perangkat yang mendukung lokasi.';return;}
+  setGpsStatus('Meminta izin dan mengambil lokasi…',false,'Memproses');
+  navigator.geolocation.getCurrentPosition(showPosition,err=>{
+    const messages={1:'Izin lokasi ditolak. Izinkan akses lokasi di pengaturan browser.',2:'Lokasi tidak tersedia. Periksa GPS dan sinyal perangkat.',3:'Permintaan lokasi melewati batas waktu. Coba lagi.'};
+    setGpsStatus(messages[err.code]||'Gagal mengambil lokasi');
+    $('gpsHint').textContent=messages[err.code]||err.message;
+  },{enableHighAccuracy:true,timeout:20000,maximumAge:0});
+}
+$('locateBtn').addEventListener('click',getLocation);
+$('watchBtn').addEventListener('click',()=>{
+  if(!navigator.geolocation){getLocation();return;}
+  if(watchId!==null)return;
+  setGpsStatus('Live GPS sedang berjalan…',false,'Live');
+  watchId=navigator.geolocation.watchPosition(showPosition,err=>setGpsStatus('Live GPS: '+(err.message||'gagal')), {enableHighAccuracy:true,maximumAge:1000,timeout:20000});
+  $('watchBtn').disabled=true;$('stopBtn').disabled=false;
+});
+$('stopBtn').addEventListener('click',()=>{
+  if(watchId!==null)navigator.geolocation.clearWatch(watchId);
+  watchId=null;$('watchBtn').disabled=false;$('stopBtn').disabled=true;
+  setGpsStatus(latestPosition?'Live GPS dihentikan; koordinat terakhir tetap ditampilkan':'Live GPS dihentikan',!!latestPosition,latestPosition?'Terakhir':'Berhenti');
+});
+$('copyBtn').addEventListener('click',async()=>{
+  if(!latestPosition)return;
+  const c=latestPosition.coords, val=`${c.latitude}, ${c.longitude}`;
+  try{await navigator.clipboard.writeText(val);$('copyBtn').textContent='Tersalin ✓';setTimeout(()=>$('copyBtn').textContent='Salin koordinat',1800);}
+  catch(e){$('copyBtn').textContent=val;}
+});
+function readConnection(){
+  const c=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+  $('online').textContent=navigator.onLine?'Terhubung':'Offline';
+  $('netStatus').textContent=navigator.onLine?'Perangkat terhubung ke internet':'Tidak ada koneksi internet';
+  $('netDot').className='dot'+(navigator.onLine?' good':'');
+  $('netPill').textContent=navigator.onLine?'Online':'Offline';
+  $('connType').textContent=c?(c.type||c.effectiveType||'Tidak diketahui'):'Tidak dibuka browser';
+  $('downlink').textContent=c&&c.downlink!=null?c.downlink+' Mbps':'Tidak tersedia';
+  $('rtt').textContent=c&&c.rtt!=null?c.rtt+' ms':'Tidak tersedia';
+  $('saveData').textContent=c&&'saveData' in c?(c.saveData?'Aktif':'Tidak aktif'):'Tidak tersedia';
+}
+async function refreshNetwork(){
+  readConnection();$('ip').textContent='Memeriksa…';
+  if(!navigator.onLine){$('ip').textContent='Perangkat offline';return;}
+  try{
+    const controller=new AbortController(), timer=setTimeout(()=>controller.abort(),7000);
+    const r=await fetch('https://api.ipify.org?format=json',{cache:'no-store',signal:controller.signal});
+    clearTimeout(timer);if(!r.ok)throw Error('Layanan IP tidak merespons');
+    const data=await r.json();$('ip').textContent=data.ip||'Tidak tersedia';
+  }catch(e){$('ip').textContent='Tidak dapat diperiksa';}
+}
+$('refreshNet').addEventListener('click',refreshNetwork);
+window.addEventListener('online',readConnection);window.addEventListener('offline',readConnection);
+const conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+if(conn&&conn.addEventListener)conn.addEventListener('change',readConnection);
+readConnection();refreshNetwork();
+</script>
+</body>
+</html>
